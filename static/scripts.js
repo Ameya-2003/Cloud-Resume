@@ -31,6 +31,42 @@ function initChessBoard() {
         '7,4': '♔', '7,5': '♗', '7,6': '♘', '7,7': '♖'
     };
     
+    // Tech logos to replace chess pieces
+    const techLogos = {
+        '0,0': { icon: '<i class="fab fa-aws"></i>', name: 'AWS' },
+        '0,1': { icon: '<i class="fas fa-cloud"></i>', name: 'Cloud' },
+        '0,2': { icon: '<i class="fab fa-docker"></i>', name: 'Docker' },
+        '0,3': { icon: '<i class="fab fa-kubernetes"></i>', name: 'K8s' },
+        '0,4': { icon: '<i class="fab fa-github-alt"></i>', name: 'GitHub' },
+        '0,5': { icon: '<i class="fab fa-jenkins"></i>', name: 'Jenkins' },
+        '0,6': { icon: '<i class="fab fa-linux"></i>', name: 'Linux' },
+        '0,7': { icon: '<i class="fab fa-python"></i>', name: 'Python' },
+        '1,0': { icon: '<i class="fab fa-js-square"></i>', name: 'JS' },
+        '1,1': { icon: '<i class="fab fa-html5"></i>', name: 'HTML5' },
+        '1,2': { icon: '<i class="fab fa-css3-alt"></i>', name: 'CSS3' },
+        '1,3': { icon: '<i class="fab fa-node-js"></i>', name: 'Node.js' },
+        '1,4': { icon: '<i class="fas fa-database"></i>', name: 'DB' },
+        '1,5': { icon: '<i class="fas fa-network-wired"></i>', name: 'Network' },
+        '1,6': { icon: '<i class="fas fa-server"></i>', name: 'Server' },
+        '1,7': { icon: '<i class="fas fa-shield-alt"></i>', name: 'Security' },
+        '6,0': { icon: '<i class="fab fa-terraform"></i>', name: 'Terraform' },
+        '6,1': { icon: '<i class="fas fa-code-branch"></i>', name: 'Git' },
+        '6,2': { icon: '<i class="fas fa-terminal"></i>', name: 'CLI' },
+        '6,3': { icon: '<i class="fas fa-exchange-alt"></i>', name: 'API' },
+        '6,4': { icon: '<i class="fas fa-project-diagram"></i>', name: 'Infra' },
+        '6,5': { icon: '<i class="fas fa-cloud-upload-alt"></i>', name: 'Deploy' },
+        '6,6': { icon: '<i class="fas fa-code"></i>', name: 'Code' },
+        '6,7': { icon: '<i class="fas fa-cogs"></i>', name: 'DevOps' },
+        '7,0': { icon: '<i class="fab fa-slack"></i>', name: 'Slack' },
+        '7,1': { icon: '<i class="fas fa-robot"></i>', name: 'Automation' },
+        '7,2': { icon: '<i class="fas fa-chart-line"></i>', name: 'Monitoring' },
+        '7,3': { icon: '<i class="fas fa-sitemap"></i>', name: 'Architecture' },
+        '7,4': { icon: '<i class="fas fa-box"></i>', name: 'Containers' },
+        '7,5': { icon: '<i class="fas fa-tachometer-alt"></i>', name: 'Performance' },
+        '7,6': { icon: '<i class="fas fa-file-code"></i>', name: 'IaC' },
+        '7,7': { icon: '<i class="fas fa-clipboard-check"></i>', name: 'Testing' }
+    };
+
     // Generate the chess board
     for (let row = 0; row < 8; row++) {
         for (let col = 0; col < 8; col++) {
@@ -38,18 +74,20 @@ function initChessBoard() {
             square.className = `chess-square ${(row + col) % 2 === 0 ? 'bg-white' : 'bg-black'}`;
             square.style.backgroundColor = (row + col) % 2 === 0 ? '#f0f0f0' : '#333333';
             
-            // Add chess piece if needed
+            // Add tech logo if needed
             const pieceKey = `${row},${col}`;
-            if (initialBoardPosition[pieceKey]) {
-                const pieceContainer = document.createElement('div');
-                pieceContainer.className = 'chess-piece-container';
+            if (techLogos[pieceKey]) {
+                const logoContainer = document.createElement('div');
+                logoContainer.className = 'chess-piece-container tech-logo';
                 
-                // Determine if piece is black (first two rows) or white (last two rows)
-                const isBlack = row < 2;
-                pieceContainer.style.color = isBlack ? '#333333' : '#f0f0f0';
+                // Determine if logo should be dark or light based on position
+                const isDark = row < 2;
+                logoContainer.style.color = isDark ? '#333333' : '#f0f0f0';
                 
-                pieceContainer.textContent = initialBoardPosition[pieceKey];
-                square.appendChild(pieceContainer);
+                // Add the logo icon and tooltip
+                logoContainer.innerHTML = techLogos[pieceKey].icon;
+                logoContainer.setAttribute('title', techLogos[pieceKey].name);
+                square.appendChild(logoContainer);
             }
             
             chessBoard.appendChild(square);
