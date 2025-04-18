@@ -1,0 +1,163 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 20%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 20%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 20%;
+    
+    --primary: 45 57% 52%;
+    --primary-foreground: 0 0% 20%;
+    
+    --secondary: 0 0% 27%;
+    --secondary-foreground: 0 0% 98%;
+    
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
+    
+    --accent: 0 0% 96%;
+    --accent-foreground: 0 0% 20%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 45 57% 52%;
+    
+    --radius: 0.5rem;
+
+    /* Chess theme colors */
+    --chess-white: 0 0% 94%;
+    --chess-black: 0 0% 20%;
+    --chess-gold: 45 57% 52%;
+    --chess-dark-gray: 0 0% 29%;
+    --chess-light-gray: 0 0% 91%;
+  }
+
+  .dark {
+    --background: 0 0% 20%;
+    --foreground: 0 0% 94%;
+    
+    --card: 0 0% 20%;
+    --card-foreground: 0 0% 94%;
+    
+    --popover: 0 0% 20%;
+    --popover-foreground: 0 0% 94%;
+    
+    --primary: 45 57% 52%;
+    --primary-foreground: 0 0% 20%;
+    
+    --secondary: 0 0% 94%;
+    --secondary-foreground: 0 0% 20%;
+    
+    --muted: 0 0% 29%;
+    --muted-foreground: 0 0% 80%;
+    
+    --accent: 0 0% 29%;
+    --accent-foreground: 0 0% 94%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 94%;
+    
+    --border: 0 0% 29%;
+    --input: 0 0% 29%;
+    --ring: 45 57% 52%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-body antialiased bg-background text-foreground;
+  }
+
+  /* Chess-themed animations */
+  @keyframes knightMove {
+    0% { transform: translate(0, 0); }
+    50% { transform: translate(30px, -50px); }
+    100% { transform: translate(60px, 0); }
+  }
+
+  @keyframes pawnAdvance {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-20px); }
+  }
+
+  @keyframes boardFade {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+  @keyframes pieceHover {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0); }
+  }
+
+  .animate-knight-move {
+    animation: knightMove 1.2s ease-in-out;
+  }
+
+  .animate-pawn-advance {
+    animation: pawnAdvance 0.8s ease-in-out;
+  }
+
+  .animate-board-fade {
+    animation: boardFade 1.5s ease-in-out;
+  }
+
+  .animate-piece-hover {
+    animation: pieceHover 0.3s ease-in-out infinite;
+  }
+
+  /* Chess fonts */
+  .font-chess {
+    font-family: 'Playfair Display', serif;
+  }
+
+  .font-body {
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .font-accent {
+    font-family: 'Cinzel', serif;
+  }
+
+  /* Chess colors */
+  .bg-chess-white {
+    background-color: hsl(var(--chess-white));
+  }
+
+  .bg-chess-black {
+    background-color: hsl(var(--chess-black));
+  }
+
+  .text-chess-gold {
+    color: hsl(var(--chess-gold));
+  }
+
+  .bg-chess-gold {
+    background-color: hsl(var(--chess-gold));
+  }
+
+  .bg-chess-dark-gray {
+    background-color: hsl(var(--chess-dark-gray));
+  }
+
+  .bg-chess-light-gray {
+    background-color: hsl(var(--chess-light-gray));
+  }
+
+  .border-chess-gold {
+    border-color: hsl(var(--chess-gold));
+  }
+}
