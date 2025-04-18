@@ -1,0 +1,86 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Chess-themed AWS Cloud Resume Challenge - Backend Infrastructure
+
+# Global parameters
+Parameters:
+  Environment:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - prod
+    Description: Environment name
+
+# Resources section defines the AWS infrastructure
+Resources:
+  # DynamoDB table for visitor counter
+  VisitorCounterTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub visitor-counter-${Environment}
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+
+  # Lambda function to handle visitor counter operations
+  VisitorCounterFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub visitor-counter-${Environment}
+      CodeUri: lambda/
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 10
+      Events:
+        GetVisitorCount:
+          Type: Api
+          Properties:
+            Path: /visitors
+            Method: get
+        UpdateVisitorCount:
+          Type: Api
+          Properties:
+            Path: /visitors
+            Method: post
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref VisitorCounterTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref VisitorCounterTable
+
+  # API Gateway to expose Lambda function
+  VisitorCounterApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: !Ref Environment
+      Cors:
+        AllowMethods: "'GET,POST,OPTIONS'"
+        AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+        AllowOrigin: "'*'"
+
+# Outputs section defines the values that are output after stack creation
+Outputs:
+  # DynamoDB table name
+  VisitorCounterTable:
+    Description: "DynamoDB table for visitor counter"
+    Value: !Ref VisitorCounterTable
+
+  # Lambda function ARN
+  VisitorCounterFunction:
+    Description: "Lambda function ARN"
+    Value: !GetAtt VisitorCounterFunction.Arn
+
+  # API Gateway endpoint URL
+  VisitorCounterApiEndpoint:
+    Description: "API Gateway endpoint URL"
+    Value: !Sub "https://${VisitorCounterApi}.execute-api.${AWS::Region}.amazonaws.com/${Environment}/visitors"
