@@ -12,6 +12,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize visitor counter
     initVisitorCounter();
+    
+    // Initialize scroll progress bar
+    initScrollProgressBar();
+    
+    // Initialize animations
+    initAnimations();
 });
 
 // Chess board initialization
@@ -257,3 +263,241 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
     });
 });
+
+// Scroll Progress Bar
+function initScrollProgressBar() {
+    const scrollProgress = document.getElementById('scrollProgress');
+    if (!scrollProgress) return;
+
+    window.addEventListener('scroll', () => {
+        const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (window.scrollY / windowHeight) * 100;
+        
+        anime({
+            targets: scrollProgress,
+            width: scrolled + '%',
+            duration: 100,
+            easing: 'linear'
+        });
+    });
+}
+
+// Initialize all animations
+function initAnimations() {
+    // Hero section animations
+    animateHeroSection();
+    
+    // Animate elements on scroll
+    initScrollAnimations();
+    
+    // Initialize chess board piece animations
+    animateChessPieces();
+    
+    // Initialize button hover animations
+    initButtonAnimations();
+    
+    // Initialize counter animations
+    initCounterAnimations();
+}
+
+// Hero section animations - Header elements fade in sequentially
+function animateHeroSection() {
+    // Animate logo and navigation
+    anime({
+        targets: '.logo .animated-element, .nav-links .animated-element',
+        opacity: [0, 1],
+        translateY: [10, 0],
+        delay: anime.stagger(100),
+        duration: 800,
+        easing: 'easeOutQuad'
+    });
+    
+    // Headline animation with staggered elements
+    anime({
+        targets: '.hero-text-element',
+        opacity: [0, 1],
+        translateY: [20, 0],
+        delay: anime.stagger(200, {start: 400}),
+        duration: 1000,
+        easing: 'easeOutQuad'
+    });
+}
+
+// Chess board pieces animation
+function animateChessPieces() {
+    const chessPieces = document.querySelectorAll('.chess-piece-container');
+    
+    anime({
+        targets: chessPieces,
+        opacity: [0, 1],
+        translateY: [-30, 0],
+        delay: anime.stagger(50),
+        duration: 800,
+        easing: 'easeOutElastic(1, .6)'
+    });
+}
+
+// Button hover animations
+function initButtonAnimations() {
+    const buttons = document.querySelectorAll('.btn');
+    
+    buttons.forEach(button => {
+        button.addEventListener('mouseenter', () => {
+            anime({
+                targets: button,
+                scale: 1.05,
+                duration: 300,
+                easing: 'easeOutQuad'
+            });
+        });
+        
+        button.addEventListener('mouseleave', () => {
+            anime({
+                targets: button,
+                scale: 1,
+                duration: 300,
+                easing: 'easeOutQuad'
+            });
+        });
+    });
+}
+
+// Initialize counter animations
+function initCounterAnimations() {
+    const statItems = document.querySelectorAll('.stat-number');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const target = entry.target;
+                const value = parseInt(target.getAttribute('data-value'));
+                
+                anime({
+                    targets: target,
+                    innerHTML: [0, value],
+                    round: 1,
+                    duration: 2000,
+                    easing: 'easeInOutExpo'
+                });
+                
+                observer.unobserve(target);
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    statItems.forEach(item => {
+        observer.observe(item);
+    });
+}
+
+// Scroll-triggered animations
+function initScrollAnimations() {
+    // Create observers for different types of elements
+    
+    // Section headers
+    animateOnScroll('.section-header-animated', {
+        targets: '.section-header-animated h2, .section-header-animated .section-divider',
+        opacity: [0, 1],
+        translateY: [20, 0],
+        delay: anime.stagger(300),
+        duration: 800,
+        easing: 'easeOutQuad'
+    });
+    
+    // About section text animations
+    animateOnScroll('.about-text', {
+        targets: '.about-text .animated-element',
+        opacity: [0, 1],
+        translateY: [20, 0],
+        delay: anime.stagger(200),
+        duration: 800,
+        easing: 'easeOutQuad'
+    });
+    
+    // Certifications cards
+    animateOnScroll('.cert-container', {
+        targets: '.cert-card-animated',
+        opacity: [0, 1],
+        translateY: [30, 0],
+        delay: anime.stagger(150),
+        duration: 800,
+        easing: 'easeOutQuad'
+    });
+    
+    // Skills items
+    animateOnScroll('.skills-grid', {
+        targets: '.skill-item-animated',
+        opacity: [0, 1],
+        scale: [0.8, 1],
+        delay: anime.stagger(50, {grid: [8, 3], from: 'center'}),
+        duration: 600,
+        easing: 'easeOutQuad'
+    });
+    
+    // Projects
+    animateOnScroll('.projects-grid', {
+        targets: '.project-card-animated',
+        opacity: [0, 1],
+        translateY: [30, 0],
+        delay: anime.stagger(150),
+        duration: 800,
+        easing: 'easeOutQuad'
+    });
+    
+    // Visitor counter
+    animateOnScroll('.counter-container', {
+        targets: '.counter-container.animated-element',
+        opacity: [0, 1],
+        scale: [0.9, 1],
+        duration: 1000,
+        easing: 'easeOutElastic(1, .6)'
+    });
+    
+    // Contact form
+    animateOnScroll('.contact-info', {
+        targets: '.contact-info .animated-element',
+        opacity: [0, 1],
+        translateX: [-20, 0],
+        delay: anime.stagger(100),
+        duration: 800,
+        easing: 'easeOutQuad'
+    });
+    
+    animateOnScroll('.contact-form', {
+        targets: '.form-control-animated',
+        opacity: [0, 1],
+        translateX: [-30, 0],
+        delay: anime.stagger(150),
+        duration: 800,
+        easing: 'easeOutQuad'
+    });
+    
+    // Footer
+    animateOnScroll('.footer-content', {
+        targets: '.footer-icon-animated',
+        opacity: [0, 1],
+        translateY: [20, 0],
+        delay: anime.stagger(100),
+        duration: 600,
+        easing: 'easeOutQuad'
+    });
+}
+
+// Helper function to trigger animations on scroll
+function animateOnScroll(selector, animationConfig) {
+    const elements = document.querySelectorAll(selector);
+    if (elements.length === 0) return;
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                anime(animationConfig);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    
+    elements.forEach(element => {
+        observer.observe(element);
+    });
+}
