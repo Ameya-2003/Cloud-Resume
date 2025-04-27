@@ -387,13 +387,36 @@
         <h2><span class="chess-piece">♟</span> Visitor Counter</h2>
         <div class="section-divider"></div>
       </div>
-      <div class="stats-container">
-        <div class="stat-item animated-element">
-          <div class="stat">
-            <span id="visitor-count" class="stat-number" data-value="142">0</span>
-            <span class="stat-label">Visitors</span>
+      
+      <div class="chessboard-counter-display">
+        <div class="counter-card">
+          <div class="counter-header">
+            <div class="counter-crown"><i class="fas fa-crown"></i></div>
+            <h3>You are visitor</h3>
           </div>
-          <p class="counter-text">Thanks for being my <span id="visitor-ordinal">0th</span> visitor!</p>
+          
+          <div class="counter-value-container">
+            <div class="counter-value-wrapper">
+              <div class="counter-decoration left">♞</div>
+              <div id="visitor-count" class="counter-value stat-number" data-value="142">0</div>
+              <div class="counter-decoration right">♞</div>
+            </div>
+          </div>
+          
+          <div class="counter-footer">
+            <p>Congratulations on being my <span id="visitor-ordinal" class="gold-text">0th</span> visitor!</p>
+            <div class="counter-badge">
+              <i class="fas fa-trophy"></i>
+              <span>AWS Cloud Resume Challenge</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="counter-chess-decoration">
+          <div class="mini-chess-piece" style="top: 10%; left: 5%;">♟</div>
+          <div class="mini-chess-piece" style="top: 30%; left: 85%;">♜</div>
+          <div class="mini-chess-piece" style="top: 65%; left: 15%;">♝</div>
+          <div class="mini-chess-piece" style="top: 80%; left: 75%;">♛</div>
         </div>
       </div>
     </div>

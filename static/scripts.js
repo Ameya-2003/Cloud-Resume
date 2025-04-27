@@ -177,22 +177,90 @@ function initContactForm() {
 function initVisitorCounter() {
     const visitorCountElement = document.getElementById('visitor-count');
     const visitorOrdinalElement = document.getElementById('visitor-ordinal');
+    const miniChessPieces = document.querySelectorAll('.mini-chess-piece');
 
     if (!visitorCountElement || !visitorOrdinalElement) return;
-
-    // Function to update the visitor count display with animation
+    
+    // Function to update the visitor count display with fancy animation
     function updateVisitorDisplay(count) {
-        // Use anime.js to animate the counter
-        anime({
+        // Prepare the counter with fancy animations
+        anime.timeline({
+            easing: 'easeOutExpo',
+        })
+        .add({
+            targets: '.counter-card',
+            scale: [0.95, 1],
+            opacity: [0.8, 1],
+            boxShadow: [
+                '0 0 0 rgba(212, 175, 55, 0.0)',
+                '0 8px 32px rgba(0, 0, 0, 0.4), 0 0 25px rgba(212, 175, 55, 0.4)'
+            ],
+            duration: 1200
+        })
+        .add({
+            targets: '.counter-crown',
+            rotate: ['-10deg', '10deg', '0deg'],
+            translateY: ['-10px', '0px'],
+            scale: [0.8, 1.2, 1],
+            opacity: [0, 1],
+            duration: 1200,
+            offset: '-=900'
+        })
+        .add({
+            targets: '.counter-decoration',
+            scale: [0, 1.2, 1],
+            opacity: [0, 1],
+            rotate: ['-20deg', '20deg', '0deg'],
+            duration: 800,
+            delay: anime.stagger(200),
+            offset: '-=800'
+        })
+        .add({
             targets: visitorCountElement,
             innerHTML: [0, count],
             round: 1,
-            duration: 2000,
+            duration: 2500,
             easing: 'easeInOutExpo',
+            offset: '-=400',
             complete: function() {
                 // Set the data-value attribute for future reference
                 visitorCountElement.setAttribute('data-value', count);
             }
+        });
+        
+        // Update the mini chess pieces with different floating animations
+        miniChessPieces.forEach((piece, index) => {
+            const delay = index * 300;
+            const duration = 5000 + (index * 1000);
+            
+            anime({
+                targets: piece,
+                opacity: [0, 0.7],
+                translateY: function() {
+                    return anime.random(-30, 30);
+                },
+                translateX: function() {
+                    return anime.random(-20, 20);
+                },
+                scale: [0.5, 1],
+                rotate: [0, anime.random(-25, 25)],
+                delay: delay,
+                duration: 1200,
+                easing: 'easeOutElastic(1, .6)',
+                complete: function() {
+                    // After appearing, start floating animation
+                    anime({
+                        targets: piece,
+                        translateY: ['-10px', '10px'],
+                        translateX: ['-5px', '5px'],
+                        rotate: ['-5deg', '5deg'],
+                        duration: duration,
+                        direction: 'alternate',
+                        loop: true,
+                        easing: 'easeInOutSine'
+                    });
+                }
+            });
         });
 
         // Update the ordinal text (1st, 2nd, 3rd, etc.)
@@ -205,19 +273,56 @@ function initVisitorCounter() {
             ordinal = 'rd';
         }
 
-        // Animate the ordinal text
+        // Animate the ordinal text with a typewriter effect
         setTimeout(() => {
+            visitorOrdinalElement.textContent = '';
+            const finalText = count + ordinal;
+            
+            // First make the element visible with a subtle animation
             anime({
                 targets: visitorOrdinalElement,
-                opacity: [0, 1],
-                translateY: [10, 0],
-                duration: 800,
+                opacity: 1,
+                duration: 300,
                 easing: 'easeOutQuad',
-                begin: function() {
-                    visitorOrdinalElement.textContent = count + ordinal;
+                complete: function() {
+                    // Then do the typewriter effect
+                    let i = 0;
+                    const typeWriter = setInterval(() => {
+                        if (i < finalText.length) {
+                            visitorOrdinalElement.textContent += finalText.charAt(i);
+                            i++;
+                        } else {
+                            clearInterval(typeWriter);
+                            // Add final visual flourish
+                            anime({
+                                targets: visitorOrdinalElement,
+                                textShadow: [
+                                    '0 0 0 rgba(212, 175, 55, 0.0)',
+                                    '0 0 10px rgba(212, 175, 55, 0.8)',
+                                    '0 0 5px rgba(212, 175, 55, 0.4)'
+                                ],
+                                duration: 1000,
+                                direction: 'alternate',
+                                loop: 2,
+                                easing: 'easeInOutSine'
+                            });
+                        }
+                    }, 100);
                 }
             });
-        }, 1000); // Delay to start after number animation is partway through
+        }, 1200);
+        
+        // Animate the badge as well
+        setTimeout(() => {
+            anime({
+                targets: '.counter-badge',
+                translateY: [20, 0],
+                opacity: [0, 1],
+                scale: [0.9, 1],
+                duration: 800,
+                easing: 'easeOutQuad'
+            });
+        }, 2000);
     }
 
     // Fetch visitor count from the API
@@ -262,7 +367,7 @@ function initVisitorCounter() {
     // Call the increment function when the page loads
     incrementVisitorCount();
     
-    // Add extra golden glow effect to the counter
+    // Add extra golden glow effect to the counter section header
     anime({
         targets: '.visitor-counter-section .section-header h2',
         textShadow: [
@@ -373,7 +478,7 @@ function animateHeroSection() {
     });
 }
 
-// Chess board pieces animation with "first move" effect
+// Chess board pieces animation with sequential moves
 function animateChessPieces() {
     const chessPieces = document.querySelectorAll('.chess-piece-container');
     
@@ -386,35 +491,8 @@ function animateChessPieces() {
         duration: 800,
         easing: 'easeOutElastic(1, .6)',
         complete: function() {
-            // After all pieces are in place, animate "first move" - let's move a pawn forward
-            const pawnToMove = document.querySelector('.chess-square:nth-child(52) .chess-piece-container'); // e2 pawn (white)
-            if (pawnToMove) {
-                // First add glow effect to highlight the piece
-                anime({
-                    targets: pawnToMove,
-                    boxShadow: [
-                        '0 0 0 rgba(255,215,0,0)', 
-                        '0 0 20px rgba(255,215,0,0.7)',
-                        '0 0 10px rgba(255,215,0,0.5)'
-                    ],
-                    duration: 1500,
-                    easing: 'easeInOutQuad'
-                });
-                
-                // Then move the pawn forward (from e2 to e4)
-                setTimeout(() => {
-                    anime({
-                        targets: pawnToMove,
-                        translateY: [-60], // Move two squares up
-                        duration: 1200,
-                        easing: 'easeOutExpo',
-                        complete: () => {
-                            // Make pieces draggable after animation completes
-                            makeChessPiecesDraggable();
-                        }
-                    });
-                }, 800);
-            }
+            // Start sequential piece movement animations for white pieces first
+            moveChessPiecesSequentially();
         }
     });
     
@@ -433,6 +511,91 @@ function animateChessPieces() {
             easing: 'easeInOutSine',
             duration: 3000,
             loop: true
+        });
+    }
+}
+
+// Function to move chess pieces sequentially - white then black
+function moveChessPiecesSequentially() {
+    // Get white pieces (rows 6 and 7)
+    const whitePieces = [
+        ...document.querySelectorAll('.chess-square:nth-child(n+49):nth-child(-n+56) .chess-piece-container'), // row 6 (pawns)
+        ...document.querySelectorAll('.chess-square:nth-child(n+57):nth-child(-n+64) .chess-piece-container')  // row 7 (other pieces)
+    ];
+    
+    // Get black pieces (rows 0 and 1)
+    const blackPieces = [
+        ...document.querySelectorAll('.chess-square:nth-child(n+1):nth-child(-n+8) .chess-piece-container'),  // row 0 (other pieces)
+        ...document.querySelectorAll('.chess-square:nth-child(n+9):nth-child(-n+16) .chess-piece-container')  // row 1 (pawns)
+    ];
+    
+    // Set up timeline for white pieces
+    let whiteMoveTimeline = anime.timeline({
+        easing: 'easeOutExpo',
+        complete: function() {
+            // After white pieces finish, start black pieces with a short delay
+            setTimeout(() => {
+                moveBlackPieces();
+            }, 500);
+        }
+    });
+    
+    // Add white pieces to the timeline with staggered delays
+    whitePieces.forEach((piece, index) => {
+        // Highlight the piece before moving
+        whiteMoveTimeline.add({
+            targets: piece,
+            boxShadow: [
+                '0 0 0 rgba(255,215,0,0)', 
+                '0 0 15px rgba(255,215,0,0.7)',
+                '0 0 5px rgba(255,215,0,0.3)'
+            ],
+            scale: [1, 1.1, 1],
+            duration: 600,
+            offset: index * 200, // Staggered start times
+        });
+        
+        // Move the piece two squares forward (different directions based on piece type)
+        whiteMoveTimeline.add({
+            targets: piece,
+            translateY: (index < 8) ? [-60] : [-40], // Pawns move 2 squares, others move less
+            duration: 800,
+            offset: index * 200 + 300, // Slightly after the highlight effect starts
+        });
+    });
+    
+    // Function to animate black pieces
+    function moveBlackPieces() {
+        let blackMoveTimeline = anime.timeline({
+            easing: 'easeOutExpo',
+            complete: function() {
+                // After all pieces have moved, make them draggable
+                makeChessPiecesDraggable();
+            }
+        });
+        
+        // Add black pieces to the timeline with staggered delays
+        blackPieces.forEach((piece, index) => {
+            // Highlight the piece before moving
+            blackMoveTimeline.add({
+                targets: piece,
+                boxShadow: [
+                    '0 0 0 rgba(255,215,0,0)', 
+                    '0 0 15px rgba(255,215,0,0.7)',
+                    '0 0 5px rgba(255,215,0,0.3)'
+                ],
+                scale: [1, 1.1, 1],
+                duration: 600,
+                offset: index * 200, // Staggered start times
+            });
+            
+            // Move the piece two squares forward
+            blackMoveTimeline.add({
+                targets: piece,
+                translateY: (index >= 8) ? [60] : [40], // Pawns move 2 squares, others move less
+                duration: 800,
+                offset: index * 200 + 300, // Slightly after the highlight effect starts
+            });
         });
     }
 }

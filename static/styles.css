@@ -736,25 +736,177 @@ button {
 
 /* Visitor Counter Section */
 .visitor-counter-section {
-  padding: 3rem 0;
+  padding: 4rem 0;
+  text-align: center;
   background-color: var(--chess-black);
   color: var(--chess-white);
+  position: relative;
+  overflow: hidden;
 }
 
-.counter-container {
-  background-color: var(--chess-gold);
-  color: var(--chess-black);
-  padding: 1.5rem;
-  border-radius: var(--border-radius);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  text-align: center;
-  max-width: 300px;
-  margin: 0 auto;
+.chessboard-counter-display {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  position: relative;
 }
 
-.counter-container h3 {
+.counter-card {
+  background: linear-gradient(145deg, #3d3d3d 0%, #252525 100%);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 15px rgba(212, 175, 55, 0.2);
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.counter-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, transparent, var(--chess-gold), transparent);
+  z-index: 2;
+}
+
+.counter-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.counter-crown {
+  font-size: 1.8rem;
+  color: var(--chess-gold);
+  margin-right: 1rem;
+  animation: glowingCrown 3s infinite alternate;
+}
+
+@keyframes glowingCrown {
+  0% { text-shadow: 0 0 5px rgba(212, 175, 55, 0.3); }
+  100% { text-shadow: 0 0 15px rgba(212, 175, 55, 0.8), 0 0 30px rgba(212, 175, 55, 0.4); }
+}
+
+.counter-header h3 {
   font-family: var(--font-accent);
+  font-size: 1.8rem;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.counter-value-container {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  position: relative;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.counter-value-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(212, 175, 55, 0.05),
+    rgba(212, 175, 55, 0.05) 10px,
+    rgba(0, 0, 0, 0) 10px,
+    rgba(0, 0, 0, 0) 20px
+  );
+  border-radius: 8px;
+  z-index: 0;
+}
+
+.counter-value-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.counter-decoration {
+  font-size: 2.5rem;
+  color: var(--chess-gold);
+  opacity: 0.6;
+  margin: 0 1.5rem;
+}
+
+.counter-value {
+  font-family: var(--font-accent);
+  font-size: 4.5rem;
+  font-weight: 700;
+  color: var(--chess-gold);
+  text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+  background: linear-gradient(to bottom, #f0d667 0%, #d4af37 50%, #a67c00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position: relative;
+}
+
+.counter-footer {
+  margin-top: 1.5rem;
+}
+
+.counter-footer p {
+  font-size: 1.2rem;
   margin-bottom: 1rem;
+}
+
+.gold-text {
+  color: var(--chess-gold);
+  font-weight: bold;
+}
+
+.counter-badge {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(212, 175, 55, 0.15);
+  border-radius: 50px;
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+}
+
+.counter-badge i {
+  color: var(--chess-gold);
+  font-size: 1.2rem;
+  margin-right: 0.5rem;
+}
+
+.counter-chess-decoration {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.mini-chess-piece {
+  position: absolute;
+  font-size: 2rem;
+  color: rgba(212, 175, 55, 0.1);
+  transform: rotate(15deg);
+  opacity: 0.7;
+  animation: floatAnimation 8s infinite ease-in-out;
+}
+
+/* Animation for mini chess pieces */
+@keyframes floatAnimation {
+  0% { transform: rotate(15deg) translateY(0); }
+  50% { transform: rotate(-5deg) translateY(-10px); }
+  100% { transform: rotate(15deg) translateY(0); }
 }
 
 .counter-display {
