@@ -383,13 +383,18 @@
 
   <section id="visitor-counter" class="visitor-counter-section">
     <div class="container">
-      <div class="counter-container animated-element">
-        <h3>Visitor Counter</h3>
-        <div class="counter-display">
-          <div class="chess-piece-icon">♟</div>
-          <div id="visitor-count" class="counter-number">0</div>
+      <div class="section-header section-header-animated">
+        <h2><span class="chess-piece">♟</span> Visitor Counter</h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="stats-container">
+        <div class="stat-item animated-element">
+          <div class="stat">
+            <span id="visitor-count" class="stat-number" data-value="142">0</span>
+            <span class="stat-label">Visitors</span>
+          </div>
+          <p class="counter-text">Thanks for being my <span id="visitor-ordinal">0th</span> visitor!</p>
         </div>
-        <p class="counter-text">Thanks for being my <span id="visitor-ordinal">0th</span> visitor!</p>
       </div>
     </div>
   </section>
@@ -465,7 +470,14 @@
         </div>
         <div class="footer-text animated-element">
           <p>&copy; 2023 Your Name. All rights reserved.</p>
-          <p>This site is part of the AWS Cloud Resume Challenge</p>
+          <div class="aws-challenge-badge footer-icon-animated">
+            <i class="fab fa-aws" style="font-size: 1.5rem; margin-right: 10px; color: var(--chess-gold);"></i>
+            <span>This website is part of the AWS Cloud Resume Challenge</span>
+          </div>
+          <div class="anime-credit footer-icon-animated" style="margin-top: 10px;">
+            <i class="fas fa-magic" style="font-size: 1.2rem; margin-right: 10px; color: var(--chess-gold);"></i>
+            <span>Animations powered by Anime.js</span>
+          </div>
         </div>
         <div class="footer-links">
           <a href="https://github.com/yourusername" aria-label="GitHub" class="footer-icon-animated">
@@ -478,6 +490,14 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
           </a>
         </div>
+      </div>
+      <div class="tech-icons-container" style="display: flex; justify-content: center; margin-top: 20px;">
+        <div class="tech-icon footer-icon-animated" style="margin: 0 10px;"><i class="fab fa-html5" title="HTML5"></i></div>
+        <div class="tech-icon footer-icon-animated" style="margin: 0 10px;"><i class="fab fa-css3-alt" title="CSS3"></i></div>
+        <div class="tech-icon footer-icon-animated" style="margin: 0 10px;"><i class="fab fa-js-square" title="JavaScript"></i></div>
+        <div class="tech-icon footer-icon-animated" style="margin: 0 10px;"><i class="fab fa-aws" title="AWS"></i></div>
+        <div class="tech-icon footer-icon-animated" style="margin: 0 10px;"><i class="fas fa-database" title="DynamoDB"></i></div>
+        <div class="tech-icon footer-icon-animated" style="margin: 0 10px;"><i class="fas fa-server" title="Serverless Architecture"></i></div>
       </div>
       <div class="chess-border-top"></div>
     </div>

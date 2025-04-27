@@ -180,10 +180,20 @@ function initVisitorCounter() {
 
     if (!visitorCountElement || !visitorOrdinalElement) return;
 
-    // Function to update the visitor count display
+    // Function to update the visitor count display with animation
     function updateVisitorDisplay(count) {
-        // Update the counter number
-        visitorCountElement.textContent = count;
+        // Use anime.js to animate the counter
+        anime({
+            targets: visitorCountElement,
+            innerHTML: [0, count],
+            round: 1,
+            duration: 2000,
+            easing: 'easeInOutExpo',
+            complete: function() {
+                // Set the data-value attribute for future reference
+                visitorCountElement.setAttribute('data-value', count);
+            }
+        });
 
         // Update the ordinal text (1st, 2nd, 3rd, etc.)
         let ordinal = 'th';
@@ -195,7 +205,19 @@ function initVisitorCounter() {
             ordinal = 'rd';
         }
 
-        visitorOrdinalElement.textContent = count + ordinal;
+        // Animate the ordinal text
+        setTimeout(() => {
+            anime({
+                targets: visitorOrdinalElement,
+                opacity: [0, 1],
+                translateY: [10, 0],
+                duration: 800,
+                easing: 'easeOutQuad',
+                begin: function() {
+                    visitorOrdinalElement.textContent = count + ordinal;
+                }
+            });
+        }, 1000); // Delay to start after number animation is partway through
     }
 
     // Fetch visitor count from the API
@@ -207,14 +229,11 @@ function initVisitorCounter() {
             // const data = await response.json();
             // updateVisitorDisplay(data.count);
 
-            // For development/demo purposes, this is a simulated count
-            // This would be replaced by the actual API call to the AWS backend
-            const simulatedCount = 142;
+            // Use the count stored in the data-value attribute
+            const simulatedCount = parseInt(visitorCountElement.getAttribute('data-value') || '142');
 
-            // Show loading state for a realistic effect
-            setTimeout(() => {
-                updateVisitorDisplay(simulatedCount);
-            }, 1000);
+            // Update with animation
+            updateVisitorDisplay(simulatedCount);
 
         } catch (error) {
             console.error('Error fetching visitor count:', error);
@@ -242,6 +261,22 @@ function initVisitorCounter() {
 
     // Call the increment function when the page loads
     incrementVisitorCount();
+    
+    // Add extra golden glow effect to the counter
+    anime({
+        targets: '.visitor-counter-section .section-header h2',
+        textShadow: [
+            '0 0 0 rgba(255,215,0,0)',
+            '0 0 10px rgba(255,215,0,0.7)',
+            '0 0 5px rgba(255,215,0,0.5)',
+            '0 0 0 rgba(255,215,0,0)'
+        ],
+        opacity: [0.9, 1, 0.95, 1],
+        duration: 3000,
+        easing: 'easeInOutSine',
+        direction: 'alternate',
+        loop: true
+    });
 }
 
 // Helper function to add ordinal suffix to numbers (1st, 2nd, 3rd, etc.)
@@ -614,8 +649,8 @@ function initScrollAnimations() {
     });
     
     // Visitor counter with bounce effect
-    animateOnScroll('.counter-container', {
-        targets: '.counter-container.animated-element',
+    animateOnScroll('.visitor-counter-section', {
+        targets: '.visitor-counter-section .stat-number',
         opacity: [0, 1],
         scale: [0.7, 1.05, 1],
         duration: 1000,
@@ -641,14 +676,61 @@ function initScrollAnimations() {
         easing: 'easeOutQuad'
     });
     
-    // Footer
-    animateOnScroll('.footer-content', {
-        targets: '.footer-icon-animated',
+    // Footer content
+    animateOnScroll('.footer', {
+        targets: '.footer-logo, .footer-text, .footer-links, .aws-challenge-badge, .anime-credit',
         opacity: [0, 1],
         translateY: [20, 0],
-        delay: anime.stagger(100),
-        duration: 600,
-        easing: 'easeOutQuad'
+        delay: anime.stagger(150),
+        duration: 800,
+        easing: 'easeOutQuad',
+        complete: function() {
+            // Animate tech icons with staggered delay
+            anime({
+                targets: '.tech-icons-container .tech-icon',
+                opacity: [0, 1],
+                translateY: [20, 0],
+                scale: [0.8, 1],
+                delay: anime.stagger(100),
+                duration: 600,
+                easing: 'easeOutQuad',
+                complete: function() {
+                    // Add rotating glow effect to tech icons
+                    anime({
+                        targets: '.tech-icons-container .tech-icon i',
+                        rotate: [0, 360],
+                        opacity: [0.8, 1, 0.8],
+                        color: ['#d4af37', '#ffcc00', '#d4af37'],
+                        duration: 8000,
+                        loop: true,
+                        easing: 'easeInOutSine',
+                        delay: anime.stagger(1000)
+                    });
+                }
+            });
+            
+            // Special animation for AWS Challenge badge
+            anime({
+                targets: '.aws-challenge-badge',
+                backgroundColor: [
+                    'rgba(30, 30, 30, 0)', 
+                    'rgba(30, 30, 30, 0.3)', 
+                    'rgba(30, 30, 30, 0)'
+                ],
+                boxShadow: [
+                    '0 0 0 rgba(255, 215, 0, 0)',
+                    '0 0 10px rgba(255, 215, 0, 0.3)',
+                    '0 0 0 rgba(255, 215, 0, 0)'
+                ],
+                borderRadius: ['0px', '5px', '0px'],
+                paddingLeft: ['0px', '10px', '0px'],
+                paddingRight: ['0px', '10px', '0px'],
+                duration: 3000,
+                direction: 'alternate',
+                loop: true,
+                easing: 'easeInOutSine'
+            });
+        }
     });
 }
 
