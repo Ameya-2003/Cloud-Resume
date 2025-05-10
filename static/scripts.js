@@ -12,25 +12,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize visitor counter
     initVisitorCounter();
-    
+
     // Initialize scroll progress bar
     initScrollProgressBar();
-    
+
     // Initialize animations
     initAnimations();
-    
+
     // Initialize page transitions
     initPageTransitions();
-    
-    // Initialize certification card flip effect
-    initCertificateCards();
-    
+
     // Initialize skill icon effects
     initSkillEffects();
-    
+
     // Initialize project spotlight effect
     initProjectSpotlight();
-    
+
     // Create the soft floating chess stars in background
     createFloatingChessStars();
 });
@@ -42,50 +39,41 @@ function initChessBoard() {
 
     // Chess piece positions for the standard starting position
     const initialBoardPosition = {
-        '0,0': '♜', '0,1': '♞', '0,2': '♝', '0,3': '♛', 
+        '0,0': '♜', '0,1': '♞', '0,2': '♝', '0,3': '♛',
         '0,4': '♚', '0,5': '♝', '0,6': '♞', '0,7': '♜',
-        '1,0': '♟', '1,1': '♟', '1,2': '♟', '1,3': '♟', 
+        '1,0': '♟', '1,1': '♟', '1,2': '♟', '1,3': '♟',
         '1,4': '♟', '1,5': '♟', '1,6': '♟', '1,7': '♟',
-        '6,0': '♙', '6,1': '♙', '6,2': '♙', '6,3': '♙', 
+        '6,0': '♙', '6,1': '♙', '6,2': '♙', '6,3': '♙',
         '6,4': '♙', '6,5': '♙', '6,6': '♙', '6,7': '♙',
-        '7,0': '♖', '7,1': '♘', '7,2': '♗', '7,3': '♕', 
+        '7,0': '♖', '7,1': '♘', '7,2': '♗', '7,3': '♕',
         '7,4': '♔', '7,5': '♗', '7,6': '♘', '7,7': '♖'
     };
 
     // Tech logos to replace chess pieces
     const techLogos = {
+
+        //White Pieces
+
         '0,0': { icon: '<i class="fab fa-aws"></i>', name: 'AWS' },
-        '0,1': { icon: '<i class="fas fa-cloud"></i>', name: 'Cloud' },
         '0,2': { icon: '<i class="fab fa-docker"></i>', name: 'Docker' },
-        '0,3': { icon: '<i class="fab fa-kubernetes"></i>', name: 'K8s' },
         '0,4': { icon: '<i class="fab fa-github-alt"></i>', name: 'GitHub' },
-        '0,5': { icon: '<i class="fab fa-jenkins"></i>', name: 'Jenkins' },
         '0,6': { icon: '<i class="fab fa-linux"></i>', name: 'Linux' },
-        '0,7': { icon: '<i class="fab fa-python"></i>', name: 'Python' },
-        '1,0': { icon: '<i class="fab fa-js-square"></i>', name: 'JS' },
-        '1,1': { icon: '<i class="fab fa-html5"></i>', name: 'HTML5' },
-        '1,2': { icon: '<i class="fab fa-css3-alt"></i>', name: 'CSS3' },
-        '1,3': { icon: '<i class="fab fa-node-js"></i>', name: 'Node.js' },
-        '1,4': { icon: '<i class="fas fa-database"></i>', name: 'DB' },
+        '1,1': { icon: '<i class="fas fa-cloud"></i>', name: 'Cloud' },
+        '1,3': { icon: '<i class="fas fa-file-alt"></i>', name: 'YAML' },
         '1,5': { icon: '<i class="fas fa-network-wired"></i>', name: 'Network' },
-        '1,6': { icon: '<i class="fas fa-server"></i>', name: 'Server' },
-        '1,7': { icon: '<i class="fas fa-shield-alt"></i>', name: 'Security' },
-        '6,0': { icon: '<i class="fab fa-terraform"></i>', name: 'Terraform' },
-        '6,1': { icon: '<i class="fas fa-code-branch"></i>', name: 'Git' },
-        '6,2': { icon: '<i class="fas fa-terminal"></i>', name: 'CLI' },
+        '1,7': { icon: '<i class="fab fa-jenkins"></i>', name: 'Jenkins' },
+
+        //Black Pieces
+
+        '6,1': { icon: '<i class="fab fa-python"></i>', name: 'Python' },
         '6,3': { icon: '<i class="fas fa-exchange-alt"></i>', name: 'API' },
-        '6,4': { icon: '<i class="fas fa-project-diagram"></i>', name: 'Infra' },
         '6,5': { icon: '<i class="fas fa-cloud-upload-alt"></i>', name: 'Deploy' },
-        '6,6': { icon: '<i class="fas fa-code"></i>', name: 'Code' },
         '6,7': { icon: '<i class="fas fa-cogs"></i>', name: 'DevOps' },
-        '7,0': { icon: '<i class="fab fa-slack"></i>', name: 'Slack' },
-        '7,1': { icon: '<i class="fas fa-robot"></i>', name: 'Automation' },
+        '7,0': { icon: '<i class="fas fa-database"></i>', name: 'MySQL' },
         '7,2': { icon: '<i class="fas fa-chart-line"></i>', name: 'Monitoring' },
-        '7,3': { icon: '<i class="fas fa-sitemap"></i>', name: 'Architecture' },
-        '7,4': { icon: '<i class="fas fa-box"></i>', name: 'Containers' },
-        '7,5': { icon: '<i class="fas fa-tachometer-alt"></i>', name: 'Performance' },
+        '7,4': { icon: '<i class="fas fa-sync-alt"></i>', name: 'CI/CD' },
         '7,6': { icon: '<i class="fas fa-file-code"></i>', name: 'IaC' },
-        '7,7': { icon: '<i class="fas fa-clipboard-check"></i>', name: 'Testing' }
+
     };
 
     // Generate the chess board
@@ -180,7 +168,7 @@ function initVisitorCounter() {
     const miniChessPieces = document.querySelectorAll('.mini-chess-piece');
 
     if (!visitorCountElement || !visitorOrdinalElement) return;
-    
+
     // Function to update the visitor count display with fancy animation
     function updateVisitorDisplay(count) {
         // Prepare the counter with fancy animations
@@ -227,12 +215,12 @@ function initVisitorCounter() {
                 visitorCountElement.setAttribute('data-value', count);
             }
         });
-        
+
         // Update the mini chess pieces with different floating animations
         miniChessPieces.forEach((piece, index) => {
             const delay = index * 300;
             const duration = 5000 + (index * 1000);
-            
+
             anime({
                 targets: piece,
                 opacity: [0, 0.7],
@@ -277,7 +265,7 @@ function initVisitorCounter() {
         setTimeout(() => {
             visitorOrdinalElement.textContent = '';
             const finalText = count + ordinal;
-            
+
             // First make the element visible with a subtle animation
             anime({
                 targets: visitorOrdinalElement,
@@ -311,7 +299,7 @@ function initVisitorCounter() {
                 }
             });
         }, 1200);
-        
+
         // Animate the badge as well
         setTimeout(() => {
             anime({
@@ -366,7 +354,7 @@ function initVisitorCounter() {
 
     // Call the increment function when the page loads
     incrementVisitorCount();
-    
+
     // Add extra golden glow effect to the counter section header
     anime({
         targets: '.visitor-counter-section .section-header h2',
@@ -427,7 +415,7 @@ function initScrollProgressBar() {
     window.addEventListener('scroll', () => {
         const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         const scrolled = (window.scrollY / windowHeight) * 100;
-        
+
         anime({
             targets: scrollProgress,
             width: scrolled + '%',
@@ -441,16 +429,16 @@ function initScrollProgressBar() {
 function initAnimations() {
     // Hero section animations
     animateHeroSection();
-    
+
     // Animate elements on scroll
     initScrollAnimations();
-    
+
     // Initialize chess board piece animations
     animateChessPieces();
-    
+
     // Initialize button hover animations
     initButtonAnimations();
-    
+
     // Initialize counter animations
     initCounterAnimations();
 }
@@ -466,7 +454,7 @@ function animateHeroSection() {
         duration: 800,
         easing: 'easeOutQuad'
     });
-    
+
     // Headline animation with staggered elements
     anime({
         targets: '.hero-text-element',
@@ -480,9 +468,11 @@ function animateHeroSection() {
 
 // Chess board pieces animation with sequential moves
 function animateChessPieces() {
-    const chessPieces = document.querySelectorAll('.chess-piece-container');
-    
+    const chessBoard = document.getElementById('chess-board');
+    if (!chessBoard) return;
+
     // First, let's drop in all pieces
+    const chessPieces = document.querySelectorAll('.chess-piece-container');
     const mainAnimation = anime({
         targets: chessPieces,
         opacity: [0, 1],
@@ -491,16 +481,34 @@ function animateChessPieces() {
         duration: 800,
         easing: 'easeOutElastic(1, .6)',
         complete: function() {
-            // Start sequential piece movement animations for white pieces first
-            moveChessPiecesSequentially();
+            // Start the specific piece movements
+            moveSpecificPieces();
         }
     });
-    
+
     // Glowing title effect for "Strategic Thinking"
-    const strategicText = document.querySelector('.text-chess-gold:first-child');
-    if (strategicText) {
+    const strategic = document.querySelector('.header-text h1 .text-chess-gold:first-child');
+    if (strategic) {
         anime({
-            targets: strategicText,
+            targets: strategic,
+            textShadow: [
+                '0 0 0 rgba(255,215,0,0)',
+                '0 0 10px rgba(255,215,0,0.7)',
+                '0 0 5px rgba(255,215,0,0.5)',
+                '0 0 0 rgba(255,215,0,0)'
+            ],
+            opacity: [0.8, 1, 0.9, 1],
+            easing: 'easeInOutSine',
+            duration: 3000,
+            loop: true
+        });
+    }
+
+    // Glowing title effect for "Calculated"
+    const calculated = document.querySelector('.header-text h1 .text-chess-gold:nth-child(3)');
+    if (calculated) {
+        anime({
+            targets: calculated,
             textShadow: [
                 '0 0 0 rgba(255,215,0,0)',
                 '0 0 10px rgba(255,215,0,0.7)',
@@ -515,156 +523,59 @@ function animateChessPieces() {
     }
 }
 
-// Function to move chess pieces sequentially - white then black
-function moveChessPiecesSequentially() {
-    // Get white pieces (rows 6 and 7)
-    const whitePieces = [
-        ...document.querySelectorAll('.chess-square:nth-child(n+49):nth-child(-n+56) .chess-piece-container'), // row 6 (pawns)
-        ...document.querySelectorAll('.chess-square:nth-child(n+57):nth-child(-n+64) .chess-piece-container')  // row 7 (other pieces)
-    ];
-    
-    // Get black pieces (rows 0 and 1)
-    const blackPieces = [
-        ...document.querySelectorAll('.chess-square:nth-child(n+1):nth-child(-n+8) .chess-piece-container'),  // row 0 (other pieces)
-        ...document.querySelectorAll('.chess-square:nth-child(n+9):nth-child(-n+16) .chess-piece-container')  // row 1 (pawns)
-    ];
-    
-    // Set up timeline for white pieces
-    let whiteMoveTimeline = anime.timeline({
-        easing: 'easeOutExpo',
+function moveSpecificPieces() {
+    const whitePawn = document.getElementById('white-pawn');
+    const blackPawn = document.getElementById('black-pawn');
+
+    if (!whitePawn || !blackPawn) {
+        console.error('Could not find chess pieces');
+        return;
+    }
+
+    const timeline = anime.timeline({
+        easing: 'easeOutQuad',
+        duration: 800
+    });
+
+    // White Pawn moves down 2 squares
+    timeline.add({
+        targets: whitePawn,
+        translateY: '200%', // 2 squares down (each 100%)
+        duration: 800,
+        easing: 'easeOutQuad',
         complete: function() {
-            // After white pieces finish, start black pieces with a short delay
-            setTimeout(() => {
-                moveBlackPieces();
-            }, 500);
+            anime({
+                targets: whitePawn,
+                scale: [1, 1.1, 1],
+                duration: 600
+            });
         }
     });
-    
-    // Add white pieces to the timeline with staggered delays
-    whitePieces.forEach((piece, index) => {
-        // Highlight the piece before moving
-        whiteMoveTimeline.add({
-            targets: piece,
-            boxShadow: [
-                '0 0 0 rgba(255,215,0,0)', 
-                '0 0 15px rgba(255,215,0,0.7)',
-                '0 0 5px rgba(255,215,0,0.3)'
-            ],
-            scale: [1, 1.1, 1],
-            duration: 600,
-            offset: index * 200, // Staggered start times
-        });
-        
-        // Move the piece two squares forward (different directions based on piece type)
-        whiteMoveTimeline.add({
-            targets: piece,
-            translateY: (index < 8) ? [-60] : [-40], // Pawns move 2 squares, others move less
-            duration: 800,
-            offset: index * 200 + 300, // Slightly after the highlight effect starts
-        });
-    });
-    
-    // Function to animate black pieces
-    function moveBlackPieces() {
-        let blackMoveTimeline = anime.timeline({
-            easing: 'easeOutExpo',
-            complete: function() {
-                // After all pieces have moved, make them draggable
-                makeChessPiecesDraggable();
-            }
-        });
-        
-        // Add black pieces to the timeline with staggered delays
-        blackPieces.forEach((piece, index) => {
-            // Highlight the piece before moving
-            blackMoveTimeline.add({
-                targets: piece,
-                boxShadow: [
-                    '0 0 0 rgba(255,215,0,0)', 
-                    '0 0 15px rgba(255,215,0,0.7)',
-                    '0 0 5px rgba(255,215,0,0.3)'
-                ],
+
+    // Black Pawn moves up 2 squares
+    timeline.add({
+        targets: blackPawn,
+        translateY: '-200%', // 2 squares up
+        duration: 800,
+        easing: 'easeOutQuad',
+        complete: function() {
+            anime({
+                targets: blackPawn,
                 scale: [1, 1.1, 1],
-                duration: 600,
-                offset: index * 200, // Staggered start times
+                duration: 600
             });
-            
-            // Move the piece two squares forward
-            blackMoveTimeline.add({
-                targets: piece,
-                translateY: (index >= 8) ? [60] : [40], // Pawns move 2 squares, others move less
-                duration: 800,
-                offset: index * 200 + 300, // Slightly after the highlight effect starts
-            });
-        });
-    }
+        }
+    });
 }
 
-// Easter egg - draggable chess pieces
-function makeChessPiecesDraggable() {
-    const chessPieces = document.querySelectorAll('.chess-piece-container');
-    let draggedPiece = null;
-    let startPosition = { x: 0, y: 0 };
-    
-    chessPieces.forEach(piece => {
-        piece.setAttribute('draggable', 'true');
-        
-        piece.addEventListener('mousedown', (e) => {
-            draggedPiece = piece;
-            startPosition = {
-                x: e.clientX - piece.getBoundingClientRect().left,
-                y: e.clientY - piece.getBoundingClientRect().top
-            };
-            
-            piece.style.cursor = 'grabbing';
-            piece.style.zIndex = '1000';
-            
-            // Add subtle scaling to show it's being dragged
-            anime({
-                targets: piece,
-                scale: 1.1,
-                duration: 200,
-                easing: 'easeOutQuad'
-            });
-        });
-        
-        // Track mouse movement when dragging
-        document.addEventListener('mousemove', (e) => {
-            if (!draggedPiece) return;
-            
-            // Calculate new position
-            const x = e.clientX - startPosition.x;
-            const y = e.clientY - startPosition.y;
-            
-            // Update piece position
-            draggedPiece.style.position = 'absolute';
-            draggedPiece.style.left = `${x}px`;
-            draggedPiece.style.top = `${y}px`;
-        });
-        
-        // End dragging
-        document.addEventListener('mouseup', () => {
-            if (!draggedPiece) return;
-            
-            // Reset scale
-            anime({
-                targets: draggedPiece,
-                scale: 1,
-                duration: 200,
-                easing: 'easeOutQuad'
-            });
-            
-            draggedPiece.style.cursor = 'grab';
-            draggedPiece.style.zIndex = '100';
-            draggedPiece = null;
-        });
-    });
-}
+// Trigger movement after page loads
+document.addEventListener('DOMContentLoaded', moveSpecificPieces);
+
 
 // Button hover animations
 function initButtonAnimations() {
     const buttons = document.querySelectorAll('.btn');
-    
+
     buttons.forEach(button => {
         button.addEventListener('mouseenter', () => {
             anime({
@@ -674,7 +585,7 @@ function initButtonAnimations() {
                 easing: 'easeOutQuad'
             });
         });
-        
+
         button.addEventListener('mouseleave', () => {
             anime({
                 targets: button,
@@ -689,13 +600,13 @@ function initButtonAnimations() {
 // Initialize counter animations
 function initCounterAnimations() {
     const statItems = document.querySelectorAll('.stat-number');
-    
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const target = entry.target;
                 const value = parseInt(target.getAttribute('data-value'));
-                
+
                 anime({
                     targets: target,
                     innerHTML: [0, value],
@@ -703,12 +614,12 @@ function initCounterAnimations() {
                     duration: 2000,
                     easing: 'easeInOutExpo'
                 });
-                
+
                 observer.unobserve(target);
             }
         });
     }, { threshold: 0.5 });
-    
+
     statItems.forEach(item => {
         observer.observe(item);
     });
@@ -717,7 +628,7 @@ function initCounterAnimations() {
 // Scroll-triggered animations
 function initScrollAnimations() {
     // Create observers for different types of elements
-    
+
     // Section headers with drawing effect
     animateOnScroll('.section-header-animated', {
         targets: '.section-header-animated h2',
@@ -736,7 +647,7 @@ function initScrollAnimations() {
             });
         }
     });
-    
+
     // About section text animations
     animateOnScroll('.about-text', {
         targets: '.about-text .animated-element',
@@ -746,28 +657,46 @@ function initScrollAnimations() {
         duration: 800,
         easing: 'easeOutQuad'
     });
-    
-    // Certifications cards - falling from above like medals
-    animateOnScroll('.cert-container', {
-        targets: '.cert-card-animated',
-        opacity: [0, 1],
-        translateY: [-80, 0],
-        rotateX: [-30, 0],
-        delay: anime.stagger(200),
-        duration: 1200,
-        easing: 'easeOutElastic(1, 0.5)',
-        complete: function() {
-            // Add a slight swing effect after they land
-            anime({
-                targets: '.cert-card-animated',
-                rotateZ: [1, -1, 0],
-                duration: 1600,
-                easing: 'easeOutElastic(2, 0.3)',
-                delay: anime.stagger(150)
-            });
+
+  // Basic scroll-trigger animation function
+function animateOnScroll(triggerSelector, animationSettings) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          anime({
+            ...animationSettings
+          });
+          observer.unobserve(entry.target);
         }
+      });
+    }, { threshold: 0.3 });
+
+    document.querySelectorAll(triggerSelector).forEach(el => {
+      observer.observe(el);
     });
-    
+  }
+
+  // Certifications cards - 3D flip-in from left/right
+  animateOnScroll('.cert-container', {
+    targets: '.cert-card-animated',
+    opacity: [0, 1],
+    translateY: [-80, 0],
+    rotateY: [90, 0],
+    delay: anime.stagger(200),
+    duration: 1400,
+    easing: 'easeOutElastic(1, 0.5)',
+    complete: function() {
+      anime({
+        targets: '.cert-card-animated',
+        rotateZ: [1, -1, 0],
+        duration: 1600,
+        easing: 'easeOutElastic(2, 0.3)',
+        delay: anime.stagger(150)
+      });
+    }
+  });
+
+
     // Skills items - cascade effect from the center
     animateOnScroll('.skills-grid', {
         targets: '.skill-item-animated',
@@ -789,7 +718,7 @@ function initScrollAnimations() {
             });
         }
     });
-    
+
     // Projects
     animateOnScroll('.projects-grid', {
         targets: '.project-card-animated',
@@ -810,7 +739,7 @@ function initScrollAnimations() {
             });
         }
     });
-    
+
     // Visitor counter with bounce effect
     animateOnScroll('.visitor-counter-section', {
         targets: '.visitor-counter-section .stat-number',
@@ -819,7 +748,7 @@ function initScrollAnimations() {
         duration: 1000,
         easing: 'easeOutElastic(1, .6)'
     });
-    
+
     // Contact form
     animateOnScroll('.contact-info', {
         targets: '.contact-info .animated-element',
@@ -829,7 +758,7 @@ function initScrollAnimations() {
         duration: 800,
         easing: 'easeOutQuad'
     });
-    
+
     animateOnScroll('.contact-form', {
         targets: '.form-control-animated',
         opacity: [0, 1],
@@ -838,7 +767,7 @@ function initScrollAnimations() {
         duration: 800,
         easing: 'easeOutQuad'
     });
-    
+
     // Footer content
     animateOnScroll('.footer', {
         targets: '.footer-logo, .footer-text, .footer-links, .aws-challenge-badge, .anime-credit',
@@ -871,13 +800,13 @@ function initScrollAnimations() {
                     });
                 }
             });
-            
+
             // Special animation for AWS Challenge badge
             anime({
                 targets: '.aws-challenge-badge',
                 backgroundColor: [
-                    'rgba(30, 30, 30, 0)', 
-                    'rgba(30, 30, 30, 0.3)', 
+                    'rgba(30, 30, 30, 0)',
+                    'rgba(30, 30, 30, 0.3)',
                     'rgba(30, 30, 30, 0)'
                 ],
                 boxShadow: [
@@ -901,7 +830,7 @@ function initScrollAnimations() {
 function animateOnScroll(selector, animationConfig) {
     const elements = document.querySelectorAll(selector);
     if (elements.length === 0) return;
-    
+
     // Smart ScrollObserver - animation triggers only when 60% visible
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -910,11 +839,11 @@ function animateOnScroll(selector, animationConfig) {
                 observer.unobserve(entry.target);
             }
         });
-    }, { 
+    }, {
         threshold: [0, 0.2, 0.4, 0.6, 0.8, 1],
-        rootMargin: '0px 0px -50px 0px' 
+        rootMargin: '0px 0px -50px 0px'
     });
-    
+
     elements.forEach(element => {
         observer.observe(element);
     });
@@ -936,26 +865,26 @@ function initPageTransitions() {
     overlay.style.pointerEvents = 'none';
     overlay.style.transition = 'opacity 0.5s ease';
     document.body.appendChild(overlay);
-    
+
     // Enhance anchor links with fade transition
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
             const targetId = this.getAttribute('href');
             const targetElement = document.querySelector(targetId);
-            
+
             if (targetElement) {
                 // Start the transition
                 overlay.style.opacity = '0.8';
                 overlay.style.pointerEvents = 'all';
-                
+
                 // After brief delay, scroll to the section and fade out
                 setTimeout(() => {
                     window.scrollTo({
                         top: targetElement.offsetTop - 70,
                         behavior: 'auto' // Use auto here because we're handling the animation ourselves
                     });
-                    
+
                     // Wait for scroll to complete, then fade out overlay
                     setTimeout(() => {
                         overlay.style.opacity = '0';
@@ -967,72 +896,10 @@ function initPageTransitions() {
     });
 }
 
-// Certificate cards 3D flip effect
-function initCertificateCards() {
-    const certCards = document.querySelectorAll('.cert-card');
-    
-    certCards.forEach(card => {
-        // Create back content for the flip effect
-        const frontSide = card.cloneNode(true);
-        const backSide = document.createElement('div');
-        backSide.className = 'cert-card-back';
-        backSide.style.position = 'absolute';
-        backSide.style.top = '0';
-        backSide.style.left = '0';
-        backSide.style.width = '100%';
-        backSide.style.height = '100%';
-        backSide.style.background = 'var(--chess-gold)';
-        backSide.style.color = 'var(--chess-black)';
-        backSide.style.display = 'flex';
-        backSide.style.flexDirection = 'column';
-        backSide.style.justifyContent = 'center';
-        backSide.style.alignItems = 'center';
-        backSide.style.padding = '2rem';
-        backSide.style.transform = 'rotateY(180deg)';
-        backSide.style.backfaceVisibility = 'hidden';
-        
-        // Add fun fact content to back
-        backSide.innerHTML = `
-            <div style="font-size: 3rem; margin-bottom: 1rem;">🏆</div>
-            <h3 style="margin-bottom: 1rem;">Achievement Unlocked!</h3>
-            <p style="text-align: center;">This certification represents hundreds of hours of study and hands-on practice.</p>
-        `;
-        
-        // Set up container for flip effect
-        const cardContainer = document.createElement('div');
-        cardContainer.className = 'cert-card-container';
-        cardContainer.style.position = 'relative';
-        cardContainer.style.width = '100%';
-        cardContainer.style.height = '100%';
-        cardContainer.style.transition = 'transform 0.8s';
-        cardContainer.style.transformStyle = 'preserve-3d';
-        
-        // Set up front side styles
-        frontSide.style.position = 'absolute';
-        frontSide.style.width = '100%';
-        frontSide.style.height = '100%';
-        frontSide.style.backfaceVisibility = 'hidden';
-        
-        // Insert into DOM
-        cardContainer.appendChild(frontSide);
-        cardContainer.appendChild(backSide);
-        card.replaceWith(cardContainer);
-        
-        // Add hover event for flip effect
-        cardContainer.addEventListener('mouseenter', () => {
-            cardContainer.style.transform = 'rotateY(180deg)';
-        });
-        
-        cardContainer.addEventListener('mouseleave', () => {
-            cardContainer.style.transform = 'rotateY(0)';
-        });
-    });
-}
-
 // Enhance skill icons with clash animation
 function initSkillEffects() {
     const skillItems = document.querySelectorAll('.skill-item');
-    
+
     skillItems.forEach(item => {
         item.addEventListener('mouseenter', () => {
             // Knight clash vibration effect
@@ -1043,7 +910,7 @@ function initSkillEffects() {
                 duration: 600,
                 easing: 'easeInOutQuad'
             });
-            
+
             // Also create a mastery bar that fills up
             if (!item.querySelector('.skill-mastery-bar')) {
                 const masteryBar = document.createElement('div');
@@ -1056,7 +923,7 @@ function initSkillEffects() {
                 masteryBar.style.backgroundColor = 'var(--chess-gold)';
                 item.style.position = 'relative';
                 item.appendChild(masteryBar);
-                
+
                 // Animate the mastery bar filling
                 anime({
                     targets: masteryBar,
@@ -1073,9 +940,9 @@ function initSkillEffects() {
 function initProjectSpotlight() {
     const projectCards = document.querySelectorAll('.project-card');
     const projectsSection = document.querySelector('.projects-section');
-    
+
     if (!projectsSection || projectCards.length === 0) return;
-    
+
     // Create the overlay for the spotlight effect
     const overlay = document.createElement('div');
     overlay.className = 'spotlight-overlay';
@@ -1090,23 +957,23 @@ function initProjectSpotlight() {
     overlay.style.transition = 'background-color 0.3s ease';
     projectsSection.style.position = 'relative';
     projectsSection.appendChild(overlay);
-    
+
     projectCards.forEach(card => {
         card.addEventListener('mouseenter', () => {
             // Dim the overall section
             overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.4)';
-            
+
             // Highlight the current card
             card.style.position = 'relative';
             card.style.zIndex = '2';
             card.style.boxShadow = '0 0 30px rgba(255, 215, 0, 0.3)';
             card.style.transform = 'translateY(-5px) scale(1.02)';
         });
-        
+
         card.addEventListener('mouseleave', () => {
             // Remove the dim effect
             overlay.style.backgroundColor = 'rgba(0, 0, 0, 0)';
-            
+
             // Remove the highlight from the card
             card.style.zIndex = '1';
             card.style.boxShadow = '';
@@ -1128,15 +995,15 @@ function createFloatingChessStars() {
     chessStarsContainer.style.pointerEvents = 'none';
     chessStarsContainer.style.zIndex = '0';
     document.body.appendChild(chessStarsContainer);
-    
+
     // Create several floating chess piece stars
     const pieceTypes = ['♟', '♞', '♝', '♜', '♛', '♚'];
     const numStars = 12; // Keep count low for performance
-    
+
     for (let i = 0; i < numStars; i++) {
         const star = document.createElement('div');
         const pieceType = pieceTypes[Math.floor(Math.random() * pieceTypes.length)];
-        
+
         star.className = 'chess-star';
         star.textContent = pieceType;
         star.style.position = 'absolute';
@@ -1144,9 +1011,9 @@ function createFloatingChessStars() {
         star.style.fontSize = Math.random() * 20 + 10 + 'px';
         star.style.top = Math.random() * 100 + '%';
         star.style.left = Math.random() * 100 + '%';
-        
+
         chessStarsContainer.appendChild(star);
-        
+
         // Animate with parallax effect
         anime({
             targets: star,
@@ -1165,12 +1032,12 @@ function createFloatingChessStars() {
             direction: 'alternate'
         });
     }
-    
+
     // Add parallax effect based on scroll
     window.addEventListener('scroll', () => {
         const scrollY = window.scrollY;
         const stars = document.querySelectorAll('.chess-star');
-        
+
         stars.forEach((star, index) => {
             const parallaxSpeed = 0.05 * (index % 3 + 1);
             const translateY = scrollY * parallaxSpeed;

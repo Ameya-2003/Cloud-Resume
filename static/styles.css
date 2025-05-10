@@ -467,6 +467,15 @@ button {
   color: var(--chess-dark-gray);
 }
 
+:root {
+  --chess-black: #0a0a0a;
+  --chess-white: #ffffff;
+  --chess-gold: #d4af37;
+  --transition-time: 0.4s;
+  --border-radius: 10px;
+  --font-body: 'Poppins', sans-serif;
+}
+
 /* Certifications Section */
 .certifications-section {
   padding: 5rem 0;
@@ -474,26 +483,34 @@ button {
   color: var(--chess-white);
 }
 
+.cert-section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.section-header h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
 .cert-container {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 2rem;
-  max-width: 1000px;
-  margin: 0 auto;
 }
 
 .cert-card {
   background: rgba(255, 255, 255, 0.05);
   border-radius: var(--border-radius);
-  overflow: hidden;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-  transition: all var(--transition-time);
-  border-left: 4px solid var(--chess-gold);
+  padding: 1.5rem;
+  border-top: 3px solid var(--chess-gold);
+  transition: transform var(--transition-time);
 }
 
 .cert-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .cert-header {
@@ -602,6 +619,7 @@ button {
     padding-right: 1.5rem;
   }
 }
+
 
 /* Skills Section */
 .skills-section {
