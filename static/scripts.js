@@ -1,4 +1,4 @@
-// Chess-themed Portfolio - JavaScript
+// Chess-themed Portfolio - JavaScript check
 
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize the chess board
