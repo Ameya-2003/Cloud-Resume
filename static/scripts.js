@@ -317,7 +317,7 @@ function initVisitorCounter() {
     async function fetchVisitorCount() {
         try {
             // Real implementation: GET request to API
-            const response = await fetch('https://4bfefcldxk.execute-api.us-east-1.amazonaws.com/Prod', {
+            const response = await fetch('https://4bfefcldxk.execute-api.us-east-1.amazonaws.com/Prod/visitor', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -338,7 +338,7 @@ function initVisitorCounter() {
     async function incrementVisitorCount() {
         try {
             // Real implementation: POST request to API
-            const response = await fetch('https://4bfefcldxk.execute-api.us-east-1.amazonaws.com/Prod', {
+            const response = await fetch('https://4bfefcldxk.execute-api.us-east-1.amazonaws.com/Prod/visitor', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
