@@ -1,3 +1,4 @@
+# Initial Check for github actions
 import json
 import boto3
 import os
@@ -23,14 +24,14 @@ def lambda_handler(event, context):
     """
     # Get the HTTP method from the event
     http_method = event.get('httpMethod', 'GET')
-    
+
     # CORS headers for all responses
     headers = {
         'Access-Control-Allow-Origin': '*',  # Replace with your domain in production
         'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'
     }
-    
+
     # Handle OPTIONS request (preflight)
     if http_method == 'OPTIONS':
         return {
@@ -38,7 +39,7 @@ def lambda_handler(event, context):
             'headers': headers,
             'body': json.dumps({})
         }
-    
+
     try:
         # Get current count
         response = table.get_item(
@@ -46,7 +47,7 @@ def lambda_handler(event, context):
                 'id': 'visitors'
             }
         )
-        
+
         # If the counter doesn't exist yet, initialize it with 0
         if 'Item' not in response:
             count = 0
@@ -58,7 +59,7 @@ def lambda_handler(event, context):
             )
         else:
             count = response['Item']['count']
-        
+
         # Increment the counter for POST requests
         if http_method == 'POST':
             count += 1
@@ -74,7 +75,7 @@ def lambda_handler(event, context):
                     ':val': count
                 }
             )
-        
+
         # Return the response with current count
         return {
             'statusCode': 200,
@@ -83,7 +84,7 @@ def lambda_handler(event, context):
                 'count': count
             }, cls=DecimalEncoder)
         }
-        
+
     except Exception as e:
         print(f"Error: {str(e)}")
         return {
