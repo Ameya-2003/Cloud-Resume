@@ -316,18 +316,18 @@ function initVisitorCounter() {
     // Fetch visitor count from the API
     async function fetchVisitorCount() {
         try {
-            // In a real implementation, this would be an API call to AWS API Gateway
-            // which would trigger a Lambda function to update DynamoDB
-            // const response = await fetch('https://your-api-gateway-url/visitors');
-            // const data = await response.json();
-            // updateVisitorDisplay(data.count);
-
-            // Use the count stored in the data-value attribute
-            const simulatedCount = parseInt(visitorCountElement.getAttribute('data-value') || '142');
-
-            // Update with animation
-            updateVisitorDisplay(simulatedCount);
-
+            // Real implementation: GET request to API
+            const response = await fetch('https://4bfefcldxk.execute-api.us-east-1.amazonaws.com/Prod', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            updateVisitorDisplay(data.count);
         } catch (error) {
             console.error('Error fetching visitor count:', error);
             visitorCountElement.textContent = 'Error';
@@ -337,18 +337,21 @@ function initVisitorCounter() {
     // Increment visitor count
     async function incrementVisitorCount() {
         try {
-            // In a real implementation, this would be a POST request to the API
-            // const response = await fetch('https://your-api-gateway-url/visitors', {
-            //    method: 'POST'
-            // });
-            // const data = await response.json();
-            // updateVisitorDisplay(data.count);
-
-            // Call fetch to get the current count
-            fetchVisitorCount();
-
+            // Real implementation: POST request to API
+            const response = await fetch('https://4bfefcldxk.execute-api.us-east-1.amazonaws.com/Prod', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            updateVisitorDisplay(data.count);
         } catch (error) {
             console.error('Error incrementing visitor count:', error);
+            visitorCountElement.textContent = 'Error';
         }
     }
 
