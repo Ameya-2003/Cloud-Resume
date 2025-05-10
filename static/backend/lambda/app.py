@@ -1,4 +1,4 @@
-# Initial Check for github actions.
+# this is an Initial Check for github actions.
 import json
 import boto3
 import os
