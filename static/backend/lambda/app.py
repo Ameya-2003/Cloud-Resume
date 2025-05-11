@@ -5,7 +5,10 @@ import os
 from decimal import Decimal
 
 # Initialize DynamoDB client
-dynamodb = boto3.resource('dynamodb')
+dynamodb = boto3.resource(
+    'dynamodb',
+    region_name=os.environ.get('AWS_REGION', 'us-east-1')  # Default to 'us-east-1' if AWS_REGION is not set
+)
 table = dynamodb.Table(os.environ.get('TABLE_NAME', 'visitor-counter-dev'))
 
 # Custom JSON encoder to handle Decimal types from DynamoDB
