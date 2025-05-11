@@ -28,11 +28,11 @@ jobs:
 
     - name: Deploy static files to S3
       run: |
-        aws s3 sync ./static s3://${{ secrets.S3_BUCKET_NAME }} \
+        aws s3 sync . s3://${{ secrets.S3_BUCKET_NAME }} \
           --exclude ".git/*" \
           --exclude ".github/*" \
-          --exclude "README.md" \
           --exclude "backend/*" \
+          --exclude "README.md" \
           --delete
 
     - name: Invalidate CloudFront distribution
