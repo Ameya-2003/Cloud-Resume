@@ -169,9 +169,36 @@ function initVisitorCounter() {
 
     if (!visitorCountElement || !visitorOrdinalElement) return;
 
+    // Set initial loading state
+    visitorCountElement.textContent = '...';
+    visitorOrdinalElement.textContent = '';
+
     // Function to update the visitor count display with fancy animation
     function updateVisitorDisplay(count) {
-        // Prepare the counter with fancy animations
+        if (!count && count !== 0) {
+            visitorCountElement.textContent = 'Error';
+            visitorOrdinalElement.textContent = '';
+            return;
+        }
+
+        // First set the count immediately to avoid undefined
+        visitorCountElement.textContent = count;
+        visitorCountElement.setAttribute('data-value', count);
+
+        // Update the ordinal text (1st, 2nd, 3rd, etc.)
+        let ordinal = 'th';
+        if (count % 10 === 1 && count % 100 !== 11) {
+            ordinal = 'st';
+        } else if (count % 10 === 2 && count % 100 !== 12) {
+            ordinal = 'nd';
+        } else if (count % 10 === 3 && count % 100 !== 13) {
+            ordinal = 'rd';
+        }
+
+        // Set the ordinal text immediately
+        visitorOrdinalElement.textContent = count + ordinal;
+
+        // Then start the animations
         anime.timeline({
             easing: 'easeOutExpo',
         })
@@ -209,11 +236,7 @@ function initVisitorCounter() {
             round: 1,
             duration: 2500,
             easing: 'easeInOutExpo',
-            offset: '-=400',
-            complete: function() {
-                // Set the data-value attribute for future reference
-                visitorCountElement.setAttribute('data-value', count);
-            }
+            offset: '-=400'
         });
 
         // Update the mini chess pieces with different floating animations
@@ -251,72 +274,20 @@ function initVisitorCounter() {
             });
         });
 
-        // Update the ordinal text (1st, 2nd, 3rd, etc.)
-        let ordinal = 'th';
-        if (count % 10 === 1 && count % 100 !== 11) {
-            ordinal = 'st';
-        } else if (count % 10 === 2 && count % 100 !== 12) {
-            ordinal = 'nd';
-        } else if (count % 10 === 3 && count % 100 !== 13) {
-            ordinal = 'rd';
-        }
-
-        // Animate the ordinal text with a typewriter effect
-        setTimeout(() => {
-            visitorOrdinalElement.textContent = '';
-            const finalText = count + ordinal;
-
-            // First make the element visible with a subtle animation
-            anime({
-                targets: visitorOrdinalElement,
-                opacity: 1,
-                duration: 300,
-                easing: 'easeOutQuad',
-                complete: function() {
-                    // Then do the typewriter effect
-                    let i = 0;
-                    const typeWriter = setInterval(() => {
-                        if (i < finalText.length) {
-                            visitorOrdinalElement.textContent += finalText.charAt(i);
-                            i++;
-                        } else {
-                            clearInterval(typeWriter);
-                            // Add final visual flourish
-                            anime({
-                                targets: visitorOrdinalElement,
-                                textShadow: [
-                                    '0 0 0 rgba(212, 175, 55, 0.0)',
-                                    '0 0 10px rgba(212, 175, 55, 0.8)',
-                                    '0 0 5px rgba(212, 175, 55, 0.4)'
-                                ],
-                                duration: 1000,
-                                direction: 'alternate',
-                                loop: 2,
-                                easing: 'easeInOutSine'
-                            });
-                        }
-                    }, 100);
-                }
-            });
-        }, 1200);
-
-        // Animate the badge as well
-        setTimeout(() => {
-            anime({
-                targets: '.counter-badge',
-                translateY: [20, 0],
-                opacity: [0, 1],
-                scale: [0.9, 1],
-                duration: 800,
-                easing: 'easeOutQuad'
-            });
-        }, 2000);
+        // Animate the badge
+        anime({
+            targets: '.counter-badge',
+            translateY: [20, 0],
+            opacity: [0, 1],
+            scale: [0.9, 1],
+            duration: 800,
+            easing: 'easeOutQuad'
+        });
     }
 
     // Fetch visitor count from the API
     async function fetchVisitorCount() {
         try {
-            // Real implementation: GET request to API
             const response = await fetch('https://4bfefcldxk.execute-api.us-east-1.amazonaws.com/Prod/visitor', {
                 method: 'GET',
                 headers: {
@@ -331,13 +302,13 @@ function initVisitorCounter() {
         } catch (error) {
             console.error('Error fetching visitor count:', error);
             visitorCountElement.textContent = 'Error';
+            visitorOrdinalElement.textContent = '';
         }
     }
 
     // Increment visitor count
     async function incrementVisitorCount() {
         try {
-            // Real implementation: POST request to API
             const response = await fetch('https://4bfefcldxk.execute-api.us-east-1.amazonaws.com/Prod/visitor', {
                 method: 'POST',
                 headers: {
@@ -352,11 +323,15 @@ function initVisitorCounter() {
         } catch (error) {
             console.error('Error incrementing visitor count:', error);
             visitorCountElement.textContent = 'Error';
+            visitorOrdinalElement.textContent = '';
         }
     }
 
-    // Call the increment function when the page loads
-    incrementVisitorCount();
+    // First fetch the current count
+    fetchVisitorCount().then(() => {
+        // Then increment it
+        incrementVisitorCount();
+    });
 
     // Add extra golden glow effect to the counter section header
     anime({
