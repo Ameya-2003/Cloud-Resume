@@ -285,52 +285,26 @@ function initVisitorCounter() {
         });
     }
 
-    // Fetch visitor count from the API
-    async function fetchVisitorCount() {
-        try {
-            const response = await fetch('https://4bfefcldxk.execute-api.us-east-1.amazonaws.com/Prod/visitor', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const data = await response.json();
-            updateVisitorDisplay(data.count);
-        } catch (error) {
-            console.error('Error fetching visitor count:', error);
-            visitorCountElement.textContent = 'Error';
-            visitorOrdinalElement.textContent = '';
+    // Fetch and update visitor count
+    fetch('https://4bfefcldxk.execute-api.us-east-1.amazonaws.com/Prod/visitor', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
         }
-    }
-
-    // Increment visitor count
-    async function incrementVisitorCount() {
-        try {
-            const response = await fetch('https://4bfefcldxk.execute-api.us-east-1.amazonaws.com/Prod/visitor', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const data = await response.json();
-            updateVisitorDisplay(data.count);
-        } catch (error) {
-            console.error('Error incrementing visitor count:', error);
-            visitorCountElement.textContent = 'Error';
-            visitorOrdinalElement.textContent = '';
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
-    }
-
-    // First fetch the current count
-    fetchVisitorCount().then(() => {
-        // Then increment it
-        incrementVisitorCount();
+        return response.json();
+    })
+    .then(data => {
+        updateVisitorDisplay(data.count);
+    })
+    .catch(error => {
+        console.error('Visitor count error:', error);
+        visitorCountElement.textContent = 'Error';
+        visitorOrdinalElement.textContent = '';
     });
 
     // Add extra golden glow effect to the counter section header
