@@ -8,6 +8,7 @@ on:
       - 'static/index.html'
       - 'static/styles.css'
       - 'static/scripts.js'
+      - 'favicon.ico'
       - '.github/workflows/frontend-deploy.yml'
 
 jobs:
