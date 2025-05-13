@@ -287,7 +287,7 @@ function initVisitorCounter() {
 
     // Fetch and update visitor count
     fetch('https://4bfefcldxk.execute-api.us-east-1.amazonaws.com/Prod/visitor', {
-        method: 'GET',
+        method: 'GET,POST',
         headers: {
             'Content-Type': 'application/json'
         }
