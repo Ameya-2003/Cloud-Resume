@@ -1,4 +1,4 @@
-// 165-349
+// 165-356
 
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize the chess board
@@ -169,7 +169,7 @@ function initVisitorCounter() {
     const miniChessPieces = document.querySelectorAll('.mini-chess-piece');
 
     // Your API Gateway Endpoint URL
-    const API_URL = 'https://4bfefcldxk.execute-api.us-east-1.amazonaws.com/Prod/visitor'; // Replace with your actual URL
+    const API_URL = 'https://4bfefcldxk.execute-api.us-east-1.amazonaws.com/Prod/visitor'; // **MAKE SURE THIS IS YOUR ACTUAL API GATEWAY URL**
 
     if (!visitorCountElement || !visitorOrdinalElement) return;
 
@@ -177,69 +177,12 @@ function initVisitorCounter() {
     visitorCountElement.textContent = '...';
     visitorOrdinalElement.textContent = '';
 
-    // --- ADD FETCH CALLS HERE ---
-
-    // 1. Make a POST request to potentially increment the count (fires and forgets for frontend display)
-    fetch(API_URL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            // You might need to include other headers if required by your API Gateway/Lambda
-        },
-        // No body needed as IP is extracted from headers by Lambda
-    })
-    .then(response => {
-        if (!response.ok) {
-            console.error('Error incrementing visitor count:', response.statusText);
-        }
-        // We don't need to do anything else with the POST response for frontend display
-    })
-    .catch(error => {
-        console.error('Error during POST fetch for visitor counter:', error);
-    });
-
-    // 2. Make a GET request to fetch the current count
-    fetch(API_URL, {
-        method: 'GET',
-        headers: {
-             'Content-Type': 'application/json',
-             // You might need to include other headers
-        },
-    })
-    .then(response => {
-        if (!response.ok) {
-            // Handle HTTP errors (e.g., 404, 500)
-            console.error('Error fetching visitor count:', response.statusText);
-            visitorCountElement.textContent = 'Error';
-            visitorOrdinalElement.textContent = '';
-            return Promise.reject('API error'); // Stop processing
-        }
-        return response.json(); // Parse the JSON response
-    })
-    .then(data => {
-        // Check if the expected data structure exists
-        if (data && typeof data.visitorCount === 'number') {
-            // Pass the fetched count to the display function
-            updateVisitorDisplay(data.visitorCount);
-        } else {
-            console.error('Invalid response data for visitor count:', data);
-            visitorCountElement.textContent = 'Error';
-            visitorOrdinalElement.textContent = '';
-        }
-    })
-    .catch(error => {
-        console.error('Error during GET fetch for visitor counter:', error);
-        visitorCountElement.textContent = 'Error';
-        visitorOrdinalElement.textContent = '';
-    });
-
-
-    // Function to update the visitor count display with fancy animation
+    // Function to update the visitor count display with fancy animation (Your existing function)
     function updateVisitorDisplay(count) {
-        // ... (rest of your existing updateVisitorDisplay function)
-        if (!count && count !== 0) {
+        if (typeof count !== 'number' && count !== 0) { // Improved check for valid count
             visitorCountElement.textContent = 'Error';
             visitorOrdinalElement.textContent = '';
+            console.error('Invalid count received:', count);
             return;
         }
 
@@ -260,7 +203,7 @@ function initVisitorCounter() {
         // Set the ordinal text immediately
         visitorOrdinalElement.textContent = count + ordinal;
 
-        // Then start the animations
+        // Then start the animations (Your existing anime.js animations)
         anime.timeline({
             easing: 'easeOutExpo',
         })
@@ -302,42 +245,45 @@ function initVisitorCounter() {
         });
 
         // Update the mini chess pieces with different floating animations
-        miniChessPieces.forEach((piece, index) => {
-            const delay = index * 300;
-            const duration = 5000 + (index * 1000);
+        if (miniChessPieces) { // Add check if elements exist
+            miniChessPieces.forEach((piece, index) => {
+                const delay = index * 300;
+                const duration = 5000 + (index * 1000);
 
-            anime({
-                targets: piece,
-                opacity: [0, 0.7],
-                translateY: function() {
-                    return anime.random(-30, 30);
-                },
-                translateX: function() {
-                    return anime.random(-20, 20);
-                },
-                scale: [0.5, 1],
-                rotate: [0, anime.random(-25, 25)],
-                delay: delay,
-                duration: 1200,
-                easing: 'easeOutElastic(1, .6)',
-                complete: function() {
-                    // After appearing, start floating animation
-                    anime({
-                        targets: piece,
-                        translateY: ['-10px', '10px'],
-                        translateX: ['-5px', '5px'],
-                        rotate: ['-5deg', '5deg'],
-                        duration: duration,
-                        direction: 'alternate',
-                        loop: true,
-                        easing: 'easeInOutSine'
-                    });
-                }
+                anime({
+                    targets: piece,
+                    opacity: [0, 0.7],
+                    translateY: function() {
+                        return anime.random(-30, 30);
+                    },
+                    translateX: function() {
+                        return anime.random(-20, 20);
+                    },
+                    scale: [0.5, 1],
+                    rotate: [0, anime.random(-25, 25)],
+                    delay: delay,
+                    duration: 1200,
+                    easing: 'easeOutElastic(1, .6)',
+                    complete: function() {
+                        // After appearing, start floating animation
+                        anime({
+                            targets: piece,
+                            translateY: ['-10px', '10px'],
+                            translateX: ['-5px', '5px'],
+                            rotate: ['-5deg', '5deg'],
+                            duration: duration,
+                            direction: 'alternate',
+                            loop: true,
+                            easing: 'easeInOutSine'
+                        });
+                    }
+                });
             });
-        });
+        }
+
 
         // Animate the badge
-        anime({
+         anime({
             targets: '.counter-badge',
             translateY: [20, 0],
             opacity: [0, 1],
@@ -345,7 +291,68 @@ function initVisitorCounter() {
             duration: 800,
             easing: 'easeOutQuad'
         });
-    }
+
+    } // End of updateVisitorDisplay
+
+    // --- ADD FETCH CALLS HERE ---
+
+    // 1. Make a POST request to potentially increment the count
+    fetch(API_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => {
+        if (!response.ok) {
+            console.error('Error incrementing visitor count (POST failed):', response.status, response.statusText);
+            // You might want to log the response body for more details in development
+            // response.text().then(text => console.error('POST response body:', text));
+        }
+        // We don't necessarily need to process the POST response body for frontend display
+    })
+    .catch(error => {
+        console.error('Error during POST fetch for visitor counter:', error);
+    });
+
+    // 2. Make a GET request to fetch the current count
+    fetch(API_URL, {
+        method: 'GET',
+        headers: {
+             'Content-Type': 'application/json',
+        },
+        // Add cache control headers to potentially prevent browser caching if needed
+        // cache: 'no-cache', // This can help during development to ensure fresh data
+    })
+    .then(response => {
+        if (!response.ok) {
+            // Handle HTTP errors (e.g., 404, 500)
+            console.error('Error fetching visitor count (GET failed):', response.status, response.statusText);
+            visitorCountElement.textContent = 'Error';
+            visitorOrdinalElement.textContent = '';
+            // You might want to log the response body for more details in development
+            // response.text().then(text => console.error('GET response body:', text));
+            return Promise.reject('API error fetching count'); // Stop processing
+        }
+        return response.json(); // Parse the JSON response
+    })
+    .then(data => {
+        // Check if the expected data structure exists and has a number count
+        if (data && typeof data.visitorCount === 'number') {
+            // Pass the fetched count to the display function
+            updateVisitorDisplay(data.visitorCount);
+        } else {
+            console.error('Invalid response data format for visitor count:', data);
+            visitorCountElement.textContent = 'Error';
+            visitorOrdinalElement.textContent = '';
+        }
+    })
+    .catch(error => {
+        console.error('Error during GET fetch for visitor counter:', error);
+        visitorCountElement.textContent = 'Error';
+        visitorOrdinalElement.textContent = '';
+    });
+
 } // End of initVisitorCounter function
 
 
