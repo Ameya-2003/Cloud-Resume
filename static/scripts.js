@@ -286,70 +286,133 @@ function initVisitorCounter() {
     }
 
     // Fetch and update visitor count
-    fetch('https://4bfefcldxk.execute-api.us-east-1.amazonaws.com/Prod/visitor', {
-        method: 'GET,POST',
-        headers: {
-            'Content-Type': 'application/json'
+    document.addEventListener('DOMContentLoaded', () => {
+        const apiUrl = 'https://4bfefcldxk.execute-api.us-east-1.amazonaws.com/Prod/visitor';
+        const visitorCountElement = document.getElementById('visitor-count');
+        const visitorOrdinalElement = document.getElementById('visitor-ordinal');
+        const visitorMessageElement = document.querySelector('.counter-footer p:first-of-type'); // Assuming this is the paragraph for the message
+
+        // Function to update the display elements
+        function updateVisitorDisplay(count) {
+            if (visitorCountElement) {
+                visitorCountElement.textContent = count;
+            }
+            if (visitorOrdinalElement && visitorMessageElement) {
+                // You might adjust the message based on whether it's the 1st visitor
+                if (count === 1) {
+                     visitorMessageElement.innerHTML = `Congratulations on being my <span id="visitor-ordinal" class="gold-text">${getOrdinalSuffix(count)}</span> visitor!`;
+                } else if (count > 0) {
+                     visitorMessageElement.innerHTML = `Congratulations on being my <span id="visitor-ordinal" class="gold-text">${getOrdinalSuffix(count)}</span> visitor!`;
+                } else {
+                     // Handle case where count is 0 or less (shouldn't happen with incrementing)
+                     visitorMessageElement.innerHTML = `<span id="visitor-ordinal" class="gold-text">...</span>`; // Or some placeholder
+                }
+
+                 // Ensure the ordinal span gets the correct ID back if you overwrite innerHTML
+                 const updatedOrdinalSpan = visitorMessageElement.querySelector('#visitor-ordinal');
+                 if(updatedOrdinalSpan) {
+                     updatedOrdinalSpan.textContent = getOrdinalSuffix(count);
+                 }
+            }
         }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+
+        // Helper function to add ordinal suffix (same as before)
+        function getOrdinalSuffix(num) {
+            if (typeof num !== 'number') return ''; // Handle non-numeric input
+            const j = num % 10;
+            const k = num % 100;
+
+            if (j === 1 && k !== 11) {
+                return num + "st";
+            }
+            if (j === 2 && k !== 12) {
+                return num + "nd";
+            }
+            if (j === 3 && k !== 13) {
+                return num + "rd";
+            }
+
+            return num + "th";
         }
-        return response.json();
-    })
-    .then(data => {
-        // Try to get count from different possible response shapes
-        let count = data.count || data.visitorCount;
-        // If count is inside a stringified body
-        if (!count && data.body) {
-            try {
-                const body = JSON.parse(data.body);
-                count = body.count || body.visitorCount;
-            } catch (e) {}
-        }
-        updateVisitorDisplay(count);
-    })
-    .catch(error => {
-        console.error('Visitor count error:', error);
-        visitorCountElement.textContent = 'Error';
-        visitorOrdinalElement.textContent = '';
+
+        // 1. Send a POST request to trigger visitor count increment (handled by backend uniqueness check)
+        fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+                // No body is needed for this simple visitor tracking
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                // Log non-200 responses from the POST request
+                console.warn(`POST request to visitor API failed with status: ${response.status}`);
+                // Don't stop here, still try to fetch the current count
+            }
+             // Regardless of POST success/failure (for a returning visitor), proceed to fetch the count
+             // You might want to log success messages if needed based on response body
+             return response.json().catch(() => ({})); // Handle potential empty response body for POST
+        })
+        .then(postData => {
+            // Optional: Log the result of the POST request
+            console.log('POST request result:', postData);
+
+            // 2. After the POST request is processed, fetch the *current* visitor count with a GET request
+            return fetch(apiUrl, {
+                method: 'GET',
+                headers: {
+                     'Content-Type': 'application/json'
+                 }
+            });
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`GET request to visitor API failed with status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Extract and update the visitor count
+            let count = data.visitorCount; // Based on the refined Lambda GET response
+
+            // Handle cases where count might be missing or unexpected (though less likely with refined Lambda)
+            if (typeof count !== 'number' || count < 0) {
+                 console.warn('Received unexpected visitor count:', count);
+                 count = 0; // Default to 0 or handle as an error
+            }
+
+            updateVisitorDisplay(count);
+
+            // Add extra golden glow effect to the counter section header
+            const headerElement = document.querySelector('.visitor-counter-section .section-header h2');
+            if (headerElement && typeof anime !== 'undefined') { // Check if anime.js is loaded
+                anime({
+                    targets: headerElement,
+                    textShadow: [
+                        '0 0 0 rgba(255,215,0,0)',
+                        '0 0 10px rgba(255,215,0,0.7)',
+                        '0 0 5px rgba(255,215,0,0.5)',
+                        '0 0 0 rgba(255,215,0,0)'
+                    ],
+                    opacity: [0.9, 1, 0.95, 1],
+                    duration: 3000,
+                    easing: 'easeInOutSine',
+                    direction: 'alternate',
+                    loop: true
+                });
+            } else if (!headerElement) {
+                 console.warn("Visitor counter section header not found for animation.");
+            } else {
+                console.warn("anime.js library not found. Animation will not run.");
+            }
+        })
+        .catch(error => {
+            console.error('Visitor count fetch error:', error);
+            if (visitorCountElement) visitorCountElement.textContent = 'Error';
+            if (visitorOrdinalElement) visitorOrdinalElement.textContent = '';
+             if (visitorMessageElement) visitorMessageElement.textContent = 'Could not load visitor count.';
+        });
     });
-
-    // Add extra golden glow effect to the counter section header
-    anime({
-        targets: '.visitor-counter-section .section-header h2',
-        textShadow: [
-            '0 0 0 rgba(255,215,0,0)',
-            '0 0 10px rgba(255,215,0,0.7)',
-            '0 0 5px rgba(255,215,0,0.5)',
-            '0 0 0 rgba(255,215,0,0)'
-        ],
-        opacity: [0.9, 1, 0.95, 1],
-        duration: 3000,
-        easing: 'easeInOutSine',
-        direction: 'alternate',
-        loop: true
-    });
-}
-
-// Helper function to add ordinal suffix to numbers (1st, 2nd, 3rd, etc.)
-function getOrdinalSuffix(num) {
-    const j = num % 10;
-    const k = num % 100;
-
-    if (j === 1 && k !== 11) {
-        return num + "st";
-    }
-    if (j === 2 && k !== 12) {
-        return num + "nd";
-    }
-    if (j === 3 && k !== 13) {
-        return num + "rd";
-    }
-
-    return num + "th";
-}
 
 // Add smooth scrolling for anchor links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -1005,4 +1068,4 @@ function createFloatingChessStars() {
             star.style.transform = `translateY(${translateY}px)`;
         });
     });
-}
+}}
