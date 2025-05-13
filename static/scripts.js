@@ -299,7 +299,16 @@ function initVisitorCounter() {
         return response.json();
     })
     .then(data => {
-        updateVisitorDisplay(data.count);
+        // Try to get count from different possible response shapes
+        let count = data.count || data.visitorCount;
+        // If count is inside a stringified body
+        if (!count && data.body) {
+            try {
+                const body = JSON.parse(data.body);
+                count = body.count || body.visitorCount;
+            } catch (e) {}
+        }
+        updateVisitorDisplay(count);
     })
     .catch(error => {
         console.error('Visitor count error:', error);

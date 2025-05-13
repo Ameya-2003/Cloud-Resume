@@ -5,9 +5,9 @@ on:
     branches:
       - main
     paths:
-      - 'index.html'
-      - 'styles.css'
-      - 'scripts.js'
+      - 'static/index.html'
+      - 'static/styles.css'
+      - 'static/scripts.js'
       - '.github/workflows/frontend-deploy.yml'
 
 jobs:
