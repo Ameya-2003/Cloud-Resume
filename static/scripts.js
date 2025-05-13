@@ -283,7 +283,7 @@ function initVisitorCounter() {
             duration: 800,
             easing: 'easeOutQuad'
         });
-    }
+    }}
 
     // Fetch and update visitor count
     document.addEventListener('DOMContentLoaded', () => {
@@ -1068,4 +1068,4 @@ function createFloatingChessStars() {
             star.style.transform = `translateY(${translateY}px)`;
         });
     });
-}}
+}
