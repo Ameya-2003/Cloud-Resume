@@ -292,7 +292,7 @@ function initVisitorCounter() {
 
     // --- Add the Fetch API calls here ---
 
-    const API_URL = 'YOUR_API_GATEWAY_INVOKE_URL'; // <--- REPLACE WITH YOUR API URL
+    const API_URL = 'https://4bfefcldxk.execute-api.us-east-1.amazonaws.com/Prod/visitor'; // <--- REPLACE WITH YOUR API URL
 
     // 1. Send POST request to trigger backend logic (record IP and potentially increment count)
     fetch(API_URL, {
