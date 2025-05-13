@@ -1,4 +1,4 @@
-// Chess-themed Portfolio - JavaScript check
+// 165-349
 
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize the chess board
@@ -161,11 +161,15 @@ function initContactForm() {
     });
 }
 
+
 // Visitor counter functionality
 function initVisitorCounter() {
     const visitorCountElement = document.getElementById('visitor-count');
     const visitorOrdinalElement = document.getElementById('visitor-ordinal');
     const miniChessPieces = document.querySelectorAll('.mini-chess-piece');
+
+    // Your API Gateway Endpoint URL
+    const API_URL = 'https://4bfefcldxk.execute-api.us-east-1.amazonaws.com/Prod/visitor'; // Replace with your actual URL
 
     if (!visitorCountElement || !visitorOrdinalElement) return;
 
@@ -173,8 +177,66 @@ function initVisitorCounter() {
     visitorCountElement.textContent = '...';
     visitorOrdinalElement.textContent = '';
 
+    // --- ADD FETCH CALLS HERE ---
+
+    // 1. Make a POST request to potentially increment the count (fires and forgets for frontend display)
+    fetch(API_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            // You might need to include other headers if required by your API Gateway/Lambda
+        },
+        // No body needed as IP is extracted from headers by Lambda
+    })
+    .then(response => {
+        if (!response.ok) {
+            console.error('Error incrementing visitor count:', response.statusText);
+        }
+        // We don't need to do anything else with the POST response for frontend display
+    })
+    .catch(error => {
+        console.error('Error during POST fetch for visitor counter:', error);
+    });
+
+    // 2. Make a GET request to fetch the current count
+    fetch(API_URL, {
+        method: 'GET',
+        headers: {
+             'Content-Type': 'application/json',
+             // You might need to include other headers
+        },
+    })
+    .then(response => {
+        if (!response.ok) {
+            // Handle HTTP errors (e.g., 404, 500)
+            console.error('Error fetching visitor count:', response.statusText);
+            visitorCountElement.textContent = 'Error';
+            visitorOrdinalElement.textContent = '';
+            return Promise.reject('API error'); // Stop processing
+        }
+        return response.json(); // Parse the JSON response
+    })
+    .then(data => {
+        // Check if the expected data structure exists
+        if (data && typeof data.visitorCount === 'number') {
+            // Pass the fetched count to the display function
+            updateVisitorDisplay(data.visitorCount);
+        } else {
+            console.error('Invalid response data for visitor count:', data);
+            visitorCountElement.textContent = 'Error';
+            visitorOrdinalElement.textContent = '';
+        }
+    })
+    .catch(error => {
+        console.error('Error during GET fetch for visitor counter:', error);
+        visitorCountElement.textContent = 'Error';
+        visitorOrdinalElement.textContent = '';
+    });
+
+
     // Function to update the visitor count display with fancy animation
     function updateVisitorDisplay(count) {
+        // ... (rest of your existing updateVisitorDisplay function)
         if (!count && count !== 0) {
             visitorCountElement.textContent = 'Error';
             visitorOrdinalElement.textContent = '';
@@ -283,7 +345,12 @@ function initVisitorCounter() {
             duration: 800,
             easing: 'easeOutQuad'
         });
-    }}
+    }
+} // End of initVisitorCounter function
+
+
+
+
 
     // Fetch and update visitor count
     document.addEventListener('DOMContentLoaded', () => {
