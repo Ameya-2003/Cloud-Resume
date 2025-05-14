@@ -957,38 +957,40 @@ button {
 
 .contact-content {
   display: flex;
-  flex-direction: column;
-  gap: 3rem;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+  background: #fff;
+  padding: 30px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-.contact-info p {
-  margin-bottom: 2rem;
+.contact-info, .contact-form {
+  flex: 1 1 45%;
 }
 
 .contact-items {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .contact-item {
   display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-}
-
-.contact-icon {
-  font-size: 1.5rem;
-  color: var(--chess-gold);
+  align-items: center;
+  gap: 15px;
 }
 
 .contact-text h4 {
-  margin-bottom: 0.25rem;
-  font-family: var(--font-accent);
+  margin: 0 0 5px 0;
+  font-size: 1rem;
 }
 
-.contact-form p {
-  margin-bottom: 1.5rem;
+.contact-text a, .contact-text p {
+  margin: 0;
+  font-size: 0.95rem;
 }
 
 .form-group {

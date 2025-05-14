@@ -1,3 +1,5 @@
+<!-- 495-528 (Contact Form Functionality)-->
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -449,8 +451,9 @@
         <div class="section-divider"></div>
       </div>
       <div class="contact-content">
+        <!-- Left: Contact Icons -->
         <div class="contact-info">
-          <p class="animated-element"></p>
+          <p class="animated-element">Get in touch through:</p>
           <div class="contact-items">
             <div class="contact-item animated-element">
               <div class="contact-icon">
@@ -461,58 +464,64 @@
                 <a href="https://mail.google.com/mail/?view=cm&fs=1&to=ameyamuktewar@gmail.com" target="_blank" rel="noopener">Cmon! just mail me.</a>
               </div>
             </div>
+
             <div class="contact-item animated-element">
               <div class="contact-icon">
                 <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp Icon" style="width: 24px; height: 24px;">
               </div>
               <div class="contact-text">
                 <h4>WhatsApp</h4>
-                <p><a href="https://wa.me/9766539750" target="_blank" rel="noopener">DM!</a></p>
+                <a href="https://wa.me/9766539750" target="_blank" rel="noopener">DM!</a>
               </div>
             </div>
 
             <div class="contact-item animated-element">
               <div class="contact-icon">
-                <img width="50" height="50" src="https://img.icons8.com/?size=100&id=xuvGCOXi8Wyg&format=png&color=000000" alt="LinkedIn Icon">
+                <img width="24" height="24" src="https://img.icons8.com/?size=100&id=xuvGCOXi8Wyg&format=png&color=000000" alt="LinkedIn Icon">
               </div>
               <div class="contact-text">
                 <h4>LinkedIn</h4>
-                <p><a href="https://www.linkedin.com/in/ameya-muktewar-2006a9243/" target="_blank" rel="noopener">Who I am.</a></p>
+                <a href="https://www.linkedin.com/in/ameya-muktewar-2006a9243/" target="_blank" rel="noopener">Who I am.</a>
               </div>
             </div>
+
             <div class="contact-item animated-element">
               <div class="contact-icon">
                 <img src="https://img.icons8.com/?size=100&id=12599&format=png&color=000000" alt="GitHub Icon" style="width: 24px; height: 24px;">
               </div>
               <div class="contact-text">
                 <h4>GitHub</h4>
-                <p><a href="https://github.com/Ameya-2003/Ameya-Muktewar" target="_blank" rel="noopener">Build! Deploy! Repeat!</a></p>
+                <a href="https://github.com/Ameya-2003/Ameya-Muktewar" target="_blank" rel="noopener">Build! Deploy! Repeat!</a>
               </div>
             </div>
           </div>
         </div>
+
+        <!-- Right: Contact Form -->
         <div class="contact-form">
           <p class="animated-element">Or send me a message directly:</p>
-          <form id="contact-form">
+          <form id="contact-form" action="#" method="POST">
             <div class="form-group">
               <label for="name">Name</label>
-              <input type="text" id="name" name="name" class="form-control-animated" required>
+              <input type="text" id="name" name="name" class="form-control-animated" required placeholder="Your Name">
             </div>
             <div class="form-group">
               <label for="email">Email</label>
-              <input type="email" id="email" name="email" class="form-control-animated" required>
+              <input type="email" id="email" name="email" class="form-control-animated" required placeholder="your.email@example.com">
             </div>
             <div class="form-group">
               <label for="message">Message</label>
-              <textarea id="message" name="message" rows="5" class="form-control-animated" required></textarea>
+              <textarea id="message" name="message" rows="5" class="form-control-animated" required placeholder="Your Message"></textarea>
             </div>
             <button type="submit" class="btn btn-primary form-control-animated">Send Message</button>
+            <div id="contact-form-status" aria-live="polite" style="margin-top: 15px; font-weight: bold;"></div>
           </form>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- Footer -->
   <footer class="footer">
     <div class="container">
       <div class="footer-content">
@@ -545,6 +554,7 @@
   </footer>
 
   <script src="scripts.js"></script>
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
 </body>
 </html>

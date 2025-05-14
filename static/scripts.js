@@ -1,4 +1,5 @@
-// 165-305
+// 165-305 (Visitor Counter Functionality)
+// 140-227 (Contact Form Functionality)
 
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize the chess board
@@ -137,27 +138,91 @@ function initMobileMenu() {
 }
 
 // Contact form functionality
+
 function initContactForm() {
     const contactForm = document.getElementById('contact-form');
-    if (!contactForm) return;
+    // Element to show status messages (e.g., Sending..., Success, Error)
+    const statusMessage = document.createElement('div');
+    statusMessage.style.marginTop = '15px';
+    statusMessage.style.fontWeight = 'bold';
+    // Append the status message element below the form button
+    if (contactForm) {
+         const submitButton = contactForm.querySelector('button[type="submit"]');
+         if (submitButton) {
+             submitButton.parentNode.insertBefore(statusMessage, submitButton.nextSibling);
+         } else {
+             contactForm.appendChild(statusMessage); // Append at the end if no button found
+         }
+    }
 
-    contactForm.addEventListener('submit', function(e) {
+
+    if (!contactForm) {
+        console.warn("Contact form element not found.");
+        return;
+    }
+
+    // *** CRITICAL: PASTE YOUR API GATEWAY ENDPOINT URL HERE ***
+    const API_ENDPOINT = 'https://qty43lktr8.execute-api.us-east-1.amazonaws.com/default/contactFormHandler';
+
+
+    contactForm.addEventListener('submit', async function(e) { // Use async function for await
         e.preventDefault();
+
+        statusMessage.textContent = 'Sending message...';
+        statusMessage.style.color = '#007bff'; // Blue color for sending
+        statusMessage.style.display = 'block'; // Make sure it's visible
 
         // Get form data
         const name = contactForm.querySelector('#name').value;
         const email = contactForm.querySelector('#email').value;
         const message = contactForm.querySelector('#message').value;
 
-        // In a real implementation, this would send the data to a backend service
-        // For the AWS Cloud Resume Challenge, this could be a serverless function
-        console.log('Form submitted:', { name, email, message });
+        // Basic client-side validation (server-side is crucial)
+        if (!name || !email || !message) {
+            statusMessage.textContent = 'Please fill in all fields.';
+            statusMessage.style.color = '#dc3545'; // Red color for error
+            return;
+        }
 
-        // Show success message
-        alert('Thank you for your message! In a real implementation, this would be sent to a serverless function.');
 
-        // Reset form
-        contactForm.reset();
+        try {
+            const response = await fetch(API_ENDPOINT, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Include any other headers required by your API Gateway
+                },
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    message: message
+                })
+            });
+
+            const result = await response.json();
+
+            if (response.ok) { // Check for successful HTTP status codes (200-299)
+                statusMessage.textContent = result.message || 'Message sent successfully!';
+                statusMessage.style.color = '#28a745'; // Green color for success
+                contactForm.reset(); // Reset form on success
+                // Optional: Hide the status message after a few seconds
+                setTimeout(() => {
+                     statusMessage.textContent = '';
+                     statusMessage.style.display = 'none';
+                }, 5000); // Hide after 5 seconds
+
+            } else {
+                // Handle API errors (e.g., server-side validation failures)
+                statusMessage.textContent = result.message || 'Failed to send message. Please try again.';
+                statusMessage.style.color = '#dc3545'; // Red color for error
+                console.error('API Error:', result);
+            }
+
+        } catch (error) {
+            console.error('Fetch error:', error);
+            statusMessage.textContent = 'An error occurred. Please try again later.';
+            statusMessage.style.color = '#dc3545'; // Red color for error
+        }
     });
 }
 
