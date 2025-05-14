@@ -31,6 +31,36 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Create the soft floating chess stars in background
     createFloatingChessStars();
+
+    // Get the modal, the link, and the close button
+    const modal = document.getElementById("countExplanationModal");
+    const howCountLink = document.getElementById("howCountLink");
+    const closeButton = modal ? modal.querySelector(".close-button") : null; // Find the close button inside the modal, safely
+
+    // When the user clicks the link, open the modal
+    if (howCountLink && modal) { // Check if elements exist
+        howCountLink.onclick = function(event) {
+            event.preventDefault(); // Prevent default link behavior (page jump)
+            modal.style.display = "block";
+        }
+    }
+
+    // When the user clicks on the close button (x), close the modal
+    if (closeButton && modal) { // Check if elements exist
+        closeButton.onclick = function() {
+            modal.style.display = "none";
+        }
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    if (modal) { // Check if modal exists
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    }
+    // Modal ends here
 });
 
 // Chess board initialization
@@ -173,9 +203,9 @@ function initContactForm() {
         statusMessage.style.display = 'block'; // Make sure it's visible
 
         // Get form data
-        const name = contactForm.querySelector('#name').value;
-        const email = contactForm.querySelector('#email').value;
-        const message = contactForm.querySelector('#message').value;
+        const name = contactForm.querySelector('#name').value.trim();
+        const email = contactForm.querySelector('#email').value.trim();
+        const message = contactForm.querySelector('#message').value.trim();
 
         // Basic client-side validation (server-side is crucial)
         if (!name || !email || !message) {
@@ -183,6 +213,16 @@ function initContactForm() {
             statusMessage.style.color = '#dc3545'; // Red color for error
             return;
         }
+
+        // ** ADD EMAIL FORMAT VALIDATION HERE **
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // A basic regex for email format
+
+        if (!emailPattern.test(email)) {
+            statusMessage.textContent = 'Please enter a valid email address.';
+            statusMessage.style.color = '#dc3545';
+            return; // Stop execution if email format is invalid
+        }
+        // ** END EMAIL FORMAT VALIDATION **
 
 
         try {

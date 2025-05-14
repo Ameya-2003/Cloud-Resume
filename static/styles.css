@@ -577,6 +577,106 @@ button {
   line-height: 1.6;
 }
 
+/* Modal Styles */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1000; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+  -webkit-backdrop-filter: blur(5px); /* Safari support */
+  backdrop-filter: blur(5px); /* Optional: Blur background */
+}
+
+.modal-content {
+  background-color: #333; /* Dark background */
+  color: #fff; /* White text */
+  margin: 10% auto; /* 10% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+  max-width: 600px; /* Max width for readability */
+  border-radius: 8px;
+  position: relative;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  animation: fadeInModal 0.5s; /* Optional: Fade in animation */
+}
+
+@keyframes fadeInModal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+
+
+
+.close-button {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-content h3 {
+  color: var(--chess-gold); /* Use your gold color variable */
+  margin-top: 0;
+}
+
+.modal-content p {
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+.architecture-diagram-placeholder {
+  border: 1px dashed #888;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Style the link for "How count is maintained" */
+#howCountLink {
+  color: var(--chess-gold); /* Or a suitable link color */
+  text-decoration: underline;
+  cursor: pointer;
+  animation: blink 1.5s infinite; /* Your blinking animation */
+}
+
+#howCountLink:hover {
+  color: var(--chess-black); /* Change text color to black */
+  background-color: var(--chess-gold); /* Add a gold background */
+  text-decoration: none; /* Ensure no underline */
+  padding: 2px 4px; /* Add a little padding around the text */
+  border-radius: 4px; /* Slightly round the corners of the background */
+  transition: all var(--transition-time); /* Smooth transition for color/background changes */
+}
+
+/* Add this CSS to your styles.css file */
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+#howCountLink {
+  /* Add this style block below your existing #howCountLink styles */
+  animation: blink 1.5s infinite; /* Apply the animation */
+}
+
+
 .cert-verify {
   margin-top: 0.5rem;
 }

@@ -7,6 +7,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chess-Themed Portfolio | AWS Cloud Resume Challenge</title>
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -424,7 +425,38 @@
 
           <div class="counter-footer">
             <p>Congratulations on being my <span id="visitor-ordinal" class="gold-text"></span> visitor!</p>
-            <p>Hope you like my portfolio and connect with me!</p>
+            <p><a href="#" id="howCountLink">How count is maintained</a></p>
+            <section id="visitor-count" class="visitor-count-section">
+              <div class="container">
+                <div class="section-header section-header-animated">
+                  <h2><span class="chess-piece">♜</span> Visitor Count</h2>
+                  <div class="section-divider"></div>
+                </div>
+                <div class="visitor-content animated-element">
+                  <p>You are visitor number <span id="visitorCount">Loading...</span></p>
+                  <!-- REPLACE THE LINE BELOW THIS COMMENT -->
+                  <p><a href="#" id="howCountLink">How count is maintained</a></p>
+                </div>
+              </div>
+            </section>
+             <!-- Modal for Explanation -->
+  <div id="countExplanationModal" class="modal">
+    <div class="modal-content">
+      <span class="close-button">&times;</span>
+      <h3>How the Visitor Count is Maintained</h3>
+      <p>The visitor count increments each time a unique IP address accesses the website. This is tracked by a backend system utilizing AWS services.</p>
+      <p><strong>Important Note:</strong> Due to the use of a Content Delivery Network (AWS CloudFront), the IP address used for counting is the one hitting the CloudFront edge location. If a user accesses the website from the same device/network but hits a different edge location on a subsequent visit, the count might increment again as it appears as a different IP to the backend.</p>
+      <!-- Placeholder for your Architecture Diagram -->
+      <div class="architecture-diagram-placeholder">
+          <!-- Your architecture diagram image or embed code will go here -->
+          <div class="architecture-diagram-placeholder">
+            <img src="visitor-count-architecture.PNG" alt="Website Visitor Count Architecture Diagram" style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
+        </div>
+      </div>
+      <p>This system provides a general approximation of unique visitors based on observed IP addresses hitting the edge network.</p>
+    </div>
+  </div>
+
             <div class="social-icons">
               <a href="
             <div class="counter-badge">
