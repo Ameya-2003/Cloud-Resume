@@ -327,6 +327,8 @@ function initVisitorCounter() {
       return n + (s[(v - 20) % 10] || s[v] || s[0]);
     }
 
+    visitorCountElement.textContent = '...';
+    visitorOrdinalElement.textContent = '';
     updateVisitorCount(); // always update based on IP from backend
   }
 

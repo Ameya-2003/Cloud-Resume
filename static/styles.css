@@ -593,7 +593,7 @@ button {
 }
 
 .modal-content {
-  background-color: #333; /* Dark background */
+  background-color: #020202; /* Dark background */
   color: #fff; /* White text */
   margin: 10% auto; /* 10% from the top and centered */
   padding: 20px;
@@ -644,32 +644,25 @@ button {
 }
 
 /* Style the link for "How count is maintained" */
+@keyframes glowPulse {
+  0% {
+    text-shadow: 0 0 2px #fff, 0 0 8px rgba(15, 15, 14, 0.7);
+  }
+  50% {
+    text-shadow: 0 0 8px #ffffff83, 0 0 24px rgb(0, 0, 0);
+  }
+  100% {
+    text-shadow: 0 0 2px #ffffff00, 0 0 8px rgb(0, 0, 0);
+  }
+}
+
 #howCountLink {
-  color: var(--chess-gold); /* Or a suitable link color */
+  color: var(--chess-gold);
   text-decoration: underline;
   cursor: pointer;
-  animation: blink 1.5s infinite; /* Your blinking animation */
-}
-
-#howCountLink:hover {
-  color: var(--chess-black); /* Change text color to black */
-  background-color: var(--chess-gold); /* Add a gold background */
-  text-decoration: none; /* Ensure no underline */
-  padding: 2px 4px; /* Add a little padding around the text */
-  border-radius: 4px; /* Slightly round the corners of the background */
-  transition: all var(--transition-time); /* Smooth transition for color/background changes */
-}
-
-/* Add this CSS to your styles.css file */
-@keyframes blink {
-  0% { opacity: 1; }
-  50% { opacity: 0; }
-  100% { opacity: 1; }
-}
-
-#howCountLink {
-  /* Add this style block below your existing #howCountLink styles */
-  animation: blink 1.5s infinite; /* Apply the animation */
+  font-weight: bold;
+  transition: color 0.2s, background 0.2s, text-shadow 0.2s;
+  animation: glowPulse 1.5s infinite;
 }
 
 .cert-verify {
