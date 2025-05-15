@@ -265,144 +265,63 @@ function initContactForm() {
     });
 }
 
-// Visitor counter functionality
+//Start of count
+
 function initVisitorCounter() {
     const visitorCountElement = document.getElementById('visitor-count');
     const visitorOrdinalElement = document.getElementById('visitor-ordinal');
-    const miniChessPieces = document.querySelectorAll('.mini-chess-piece');
-
-    console.log("initVisitorCounter called."); // Debug: Function started
 
     if (!visitorCountElement || !visitorOrdinalElement) {
-        console.error("Visitor counter elements not found in the DOM."); // Debug: Elements missing
-        return; // Exit if elements are not found
+      console.warn("Visitor count or ordinal element not found.");
+      return;
     }
 
-    // Set initial loading state
-    visitorCountElement.textContent = '...';
-    visitorOrdinalElement.textContent = '';
-    console.log("Initial loading state set to '...'."); // Debug: Loading state set
+    const lambdaApiEndpoint = 'https://4bfefcldxk.execute-api.us-east-1.amazonaws.com/Prod/visitor'; // Replace with your real endpoint
 
-    // Function to update the visitor count display with fancy animation
-    function updateVisitorDisplay(count) {
-        console.log(`updateVisitorDisplay called with count: ${count}`); // Debug: Display function called
-
-        if (typeof count !== 'number') {
-             console.error("updateVisitorDisplay received non-numeric count:", count); // Debug: Invalid count type
-             visitorCountElement.textContent = 'Error';
-             visitorOrdinalElement.textContent = '';
-             return;
-        }
-
-        if (count < 0) { // Handle potential negative counts (shouldn't happen with your backend logic)
-            console.warn("updateVisitorDisplay received negative count:", count);
-            count = 0;
-        }
-
-
-        // First set the count immediately to avoid undefined
-        visitorCountElement.textContent = count;
-        visitorCountElement.setAttribute('data-value', count);
-        console.log(`Visitor count element text set to: ${visitorCountElement.textContent}`); // Debug: Element updated
-
-        // Update the ordinal text (1st, 2nd, 3rd, etc.)
-        let ordinal = 'th';
-        if (count % 10 === 1 && count % 100 !== 11) {
-            ordinal = 'st';
-        } else if (count % 10 === 2 && count % 100 !== 12) {
-            ordinal = 'nd';
-        } else if (count % 10 === 3 && count % 100 !== 13) {
-            ordinal = 'rd';
-        }
-        visitorOrdinalElement.textContent = count + ordinal;
-         console.log(`Visitor ordinal element text set to: ${visitorOrdinalElement.textContent}`); // Debug: Ordinal updated
-
-
-        // Then start the animations (Keep your anime.timeline code here if desired)
-        // ... (existing anime.timeline code)
-
-        // Update the mini chess pieces animations (if desired)
-        // ... (existing miniChessPieces animation code)
-
-        // Animate the badge (if desired)
-        // ... (existing anime badge animation code)
-    }
-
-    // --- Add the Fetch API calls here ---
-
-    const API_URL = 'https://4bfefcldxk.execute-api.us-east-1.amazonaws.com/Prod/visitor'; // <--- **CRITICAL: REPLACE WITH YOUR API URL**
-    console.log(`Attempting to fetch from API URL: ${API_URL}`); // Debug: API URL being used
-
-
-    // 1. Send POST request to trigger backend logic (record IP and potentially increment count)
-    fetch(API_URL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            // Add other headers if required by your API Gateway config
-        },
-        // No body needed for a simple visitor counter POST
-    })
-    .then(response => {
-        console.log('POST request status:', response.status); // Debug: POST status
-        if (!response.ok) {
-             // If POST fails, still attempt to fetch the current count with GET
-             console.warn(`POST request failed with status ${response.status}. Attempting to fetch current count.`);
-             // Don't throw here, proceed to GET fetch
-        }
-        return response.json().catch(() => {
-            console.warn("Could not parse JSON from POST response. Response body might be empty or not JSON.");
-            return {}; // Return empty object if JSON parsing fails
-        }); // Attempt to parse JSON even on non-200 status
-    })
-    .then(postData => {
-        console.log('POST request result (body):', postData); // Debug: POST response body
-        // The POST response confirms the backend action, now fetch the latest count
-
-        // 2. Send a GET request to fetch the latest count
-        console.log("Initiating GET request to fetch updated count."); // Debug: Starting GET
-        return fetch(API_URL, {
-            method: 'GET',
-             headers: {
-                // GET requests typically don't need a body
-                 'Content-Type': 'application/json', // Still good practice
-            },
+    async function updateVisitorCount() {
+      try {
+        const response = await fetch(lambdaApiEndpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
         });
-    })
-    .then(response => {
-         console.log('GET request status:', response.status); // Debug: GET status
-        if (!response.ok) {
-             // If GET fails, throw an error to be caught by the final catch block
-             throw new Error(`GET request failed with status ${response.status}`);
-        }
-        return response.json(); // Parse the JSON response from Lambda
-    })
-    .then(getData => {
-        console.log('GET request result (body):', getData); // Debug: GET response body
-        // Call the display function with the fetched count
-        // Handle both visitorCount and count properties
-        const fetchedCount = getData ? (getData.visitorCount ?? getData.count) : undefined;
-        console.log("Extracted fetchedCount:", fetchedCount); // Debug: Extracted count value
 
-        if (typeof fetchedCount === 'number') { // Check if the extracted value is a number
-             updateVisitorDisplay(fetchedCount);
-        } else {
-            console.error("GET response did not contain a valid number for visitorCount:", getData); // Debug: Invalid data structure
+        const data = await response.json();
+
+        if (response.ok) {
+          const count = data.count;
+          console.log("Count received from backend:", count);
+
+          if (typeof count === 'number' && count > 0) {
+            visitorCountElement.textContent = count;
+            visitorOrdinalElement.textContent = getOrdinal(count);
+          } else {
+            console.error('Invalid visitor count received:', count);
             visitorCountElement.textContent = 'Error';
             visitorOrdinalElement.textContent = '';
+          }
+        } else {
+          console.error('Visitor counter error:', data.error || response.statusText);
+          visitorCountElement.parentElement.style.display = 'none';
         }
-    })
-    .catch(error => {
-        console.error('An error occurred during visitor count process:', error); // Debug: Catch any errors
-        // Display an error message if the API calls fail or processing fails
-        visitorCountElement.textContent = 'Error';
-        visitorOrdinalElement.textContent = '';
-         console.log("Displayed 'Error' due to an issue."); // Debug: Error state set
-    });
+      } catch (error) {
+        console.error('Fetch error:', error);
+        visitorCountElement.parentElement.style.display = 'none';
+      }
+    }
 
-    console.log("initVisitorCounter finished setting up fetch calls."); // Debug: Function end
+    function getOrdinal(n) {
+      if (isNaN(n)) return n;
+      const s = ["th", "st", "nd", "rd"];
+      const v = n % 100;
+      return n + (s[(v - 20) % 10] || s[v] || s[0]);
+    }
 
-}
+    updateVisitorCount(); // always update based on IP from backend
+  }
+
+//End of count
 
 // Keep your other init functions below this...
 // initChessBoard(), initMobileMenu(), etc.
