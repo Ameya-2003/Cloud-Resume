@@ -61,6 +61,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     // Modal ends here
+
+    // Initialize project demo modal
+    initProjectDemoModal();
 });
 
 // Chess board initialization
@@ -1195,5 +1198,94 @@ function createFloatingChessStars() {
             const translateY = scrollY * parallaxSpeed;
             star.style.transform = `translateY(${translateY}px)`;
         });
+    });
+}
+
+// Project Demo Modal Functionality
+function initProjectDemoModal() {
+    const demoModal = document.getElementById('projectDemoModal');
+    const demoLinks = document.querySelectorAll('.demo-link');
+    const closeButton = demoModal.querySelector('.close-button');
+
+    // Project demo data
+    const projectDemos = {
+        'kube-ballot': {
+            title: 'Kube-Ballot Demo',
+            type: 'video',
+            url: 'https://drive.google.com/file/d/your-file-id/preview', // Replace with your Google Drive video ID
+            description: 'A demonstration of the Kube-Ballot voting application running on Amazon EKS.'
+        },
+        'sys-scan': {
+            title: 'Sys Scan Demo',
+            type: 'video',
+            url: 'https://drive.google.com/file/d/1fwlhxoZQO8t0D_au-PwrsPc7iJ3GiGOs/view?usp=sharing', // Replace with your Google Drive video ID
+            description: 'Watch how Sys Scan monitors system resources and provides real-time insights.'
+        },
+        'tokenization': {
+            title: 'Tokenization of Assets Demo',
+            type: 'video',
+            url: 'https://drive.google.com/file/d/your-file-id/preview', // Replace with your Google Drive video ID
+            description: 'See how assets are tokenized on the Ethereum blockchain.'
+        },
+        'blockchain-bundle': {
+            title: 'Blockchain Projects Demo',
+            type: 'video',
+            url: 'https://drive.google.com/file/d/your-file-id/preview', // Replace with your Google Drive video ID
+            description: 'Overview of various blockchain projects including the Decentralized Voting System.'
+        },
+        'cloud-resume': {
+            title: 'Cloud Resume Challenge Demo',
+            type: 'video',
+            url: 'https://drive.google.com/file/d/your-file-id/preview', // Replace with your Google Drive video ID
+            description: 'A walkthrough of the AWS Cloud Resume Challenge implementation.'
+        }
+    };
+
+    // Function to open modal with project demo
+    function openDemoModal(projectId) {
+        const project = projectDemos[projectId];
+        if (!project) return;
+
+        const modalTitle = document.getElementById('demoModalTitle');
+        const modalContent = document.getElementById('demoModalContent');
+
+        modalTitle.textContent = project.title;
+
+        let contentHTML = '';
+        if (project.type === 'video') {
+            contentHTML = `
+                <iframe src="${project.url}" allowfullscreen></iframe>
+                <div class="demo-description">
+                    <p>${project.description}</p>
+                </div>
+                <div class="demo-links">
+                    <a href="${project.url}" target="_blank" rel="noopener">Watch on Google Drive</a>
+                </div>
+            `;
+        }
+
+        modalContent.innerHTML = contentHTML;
+        demoModal.style.display = 'block';
+    }
+
+    // Event listeners for demo links
+    demoLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const projectId = link.getAttribute('data-project');
+            openDemoModal(projectId);
+        });
+    });
+
+    // Close modal when clicking the close button
+    closeButton.addEventListener('click', () => {
+        demoModal.style.display = 'none';
+    });
+
+    // Close modal when clicking outside
+    window.addEventListener('click', (e) => {
+        if (e.target === demoModal) {
+            demoModal.style.display = 'none';
+        }
     });
 }
