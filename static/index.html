@@ -644,6 +644,15 @@
   <script src="scripts.js"></script>
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
+  <!-- Add EmailJS SDK -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script type="text/javascript">
+    (function() {
+      // Replace with your actual public key
+      emailjs.init("dciR4iL8zWjDExDoH");
+    })();
+  </script>
+
   <!-- Add Project Demo Modal -->
   <div id="projectDemoModal" class="modal">
     <div class="modal-content">

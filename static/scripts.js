@@ -171,7 +171,6 @@ function initMobileMenu() {
 }
 
 // Contact form functionality
-
 function initContactForm() {
     const contactForm = document.getElementById('contact-form');
     // Element to show status messages (e.g., Sending..., Success, Error)
@@ -188,17 +187,12 @@ function initContactForm() {
          }
     }
 
-
     if (!contactForm) {
         console.warn("Contact form element not found.");
         return;
     }
 
-    // *** CRITICAL: PASTE YOUR API GATEWAY ENDPOINT URL HERE ***
-    const API_ENDPOINT = 'https://qty43lktr8.execute-api.us-east-1.amazonaws.com/default/contactFormHandler';
-
-
-    contactForm.addEventListener('submit', async function(e) { // Use async function for await
+    contactForm.addEventListener('submit', async function(e) {
         e.preventDefault();
 
         statusMessage.textContent = 'Sending message...';
@@ -210,65 +204,53 @@ function initContactForm() {
         const email = contactForm.querySelector('#email').value.trim();
         const message = contactForm.querySelector('#message').value.trim();
 
-        // Basic client-side validation (server-side is crucial)
+        // Basic client-side validation
         if (!name || !email || !message) {
             statusMessage.textContent = 'Please fill in all fields.';
             statusMessage.style.color = '#dc3545'; // Red color for error
             return;
         }
 
-        // ** ADD EMAIL FORMAT VALIDATION HERE **
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // A basic regex for email format
-
+        // Email format validation
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailPattern.test(email)) {
             statusMessage.textContent = 'Please enter a valid email address.';
             statusMessage.style.color = '#dc3545';
-            return; // Stop execution if email format is invalid
+            return;
         }
-        // ** END EMAIL FORMAT VALIDATION **
-
 
         try {
-            const response = await fetch(API_ENDPOINT, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    // Include any other headers required by your API Gateway
-                },
-                body: JSON.stringify({
+            // Send email using EmailJS
+            const response = await emailjs.send(
+                'service_jpmicyv', // Replace with your EmailJS service ID
+                'template_3zrqkyh', // Replace with your EmailJS template ID
+                {
                     name: name,
                     email: email,
                     message: message
-                })
-            });
+                }
+            );
 
-            const result = await response.json();
-
-            if (response.ok) { // Check for successful HTTP status codes (200-299)
-                statusMessage.textContent = result.message || 'Message sent successfully!';
+            if (response.status === 200) {
+                statusMessage.textContent = 'Message sent successfully!';
                 statusMessage.style.color = '#28a745'; // Green color for success
                 contactForm.reset(); // Reset form on success
-                // Optional: Hide the status message after a few seconds
+                // Hide the status message after a few seconds
                 setTimeout(() => {
                      statusMessage.textContent = '';
                      statusMessage.style.display = 'none';
                 }, 5000); // Hide after 5 seconds
-
             } else {
-                // Handle API errors (e.g., server-side validation failures)
-                statusMessage.textContent = result.message || 'Failed to send message. Please try again.';
-                statusMessage.style.color = '#dc3545'; // Red color for error
-                console.error('API Error:', result);
+                throw new Error('Failed to send message');
             }
 
         } catch (error) {
-            console.error('Fetch error:', error);
+            console.error('EmailJS error:', error);
             statusMessage.textContent = 'An error occurred. Please try again later.';
             statusMessage.style.color = '#dc3545'; // Red color for error
         }
     });
 }
-
 
 // Visitor counter functionality
 function initVisitorCounter() {
