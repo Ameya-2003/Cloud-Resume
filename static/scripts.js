@@ -221,15 +221,23 @@ function initContactForm() {
 
         try {
             // Send email using EmailJS
+            console.log('Attempting to send email with data:', {
+                name: name,
+                email: email,
+                message: message
+            });
+
             const response = await emailjs.send(
-                'service_jpmicyv', // Replace with your EmailJS service ID
-                'template_3zrqkyh', // Replace with your EmailJS template ID
+                'service_jpmicyv',
+                'template_3zrqkyh',
                 {
                     name: name,
                     email: email,
                     message: message
                 }
             );
+
+            console.log('EmailJS Response:', response);
 
             if (response.status === 200) {
                 statusMessage.textContent = 'Message sent successfully!';
@@ -241,11 +249,16 @@ function initContactForm() {
                      statusMessage.style.display = 'none';
                 }, 5000); // Hide after 5 seconds
             } else {
+                console.error('EmailJS returned non-200 status:', response);
                 throw new Error('Failed to send message');
             }
 
         } catch (error) {
-            console.error('EmailJS error:', error);
+            console.error('EmailJS error details:', {
+                error: error,
+                message: error.message,
+                text: error.text
+            });
             statusMessage.textContent = 'An error occurred. Please try again later.';
             statusMessage.style.color = '#dc3545'; // Red color for error
         }
