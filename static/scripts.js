@@ -294,8 +294,17 @@ function initVisitorCounter() {
           console.log("Count received from backend:", count);
 
           if (typeof count === 'number' && count > 0) {
-            visitorCountElement.textContent = count;
-            visitorOrdinalElement.textContent = getOrdinal(count);
+            anime({
+              targets: visitorCountElement,
+              innerHTML: [0, count],
+              round: 1,
+              duration: 2000,
+              easing: 'easeInOutExpo',
+              update: function(anim) {
+                const current = Math.round(anim.animations[0].currentValue);
+                visitorOrdinalElement.textContent = getOrdinal(current);
+              }
+            });
           } else {
             console.error('Invalid visitor count received:', count);
             visitorCountElement.textContent = 'Error';
