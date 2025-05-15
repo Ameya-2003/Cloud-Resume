@@ -500,8 +500,8 @@
     <div class="modal-content">
       <span class="close-button">&times;</span>
       <h3>How the Visitor Count is Maintained</h3>
-      <p>The visitor count increments each time a unique IP address accesses the website. This is tracked by a backend system utilizing AWS services.</p>
-      <p><strong>Important Note:</strong> Due to the use of a Content Delivery Network (AWS CloudFront), the IP address used for counting is the one hitting the CloudFront edge location. If a user accesses the website from the same device/network but hits a different edge location on a subsequent visit, the count might increment again as it appears as a different IP to the backend.</p>
+      <p>The visitor counter increments each time a unique IP address accesses the website. This is tracked by a backend system using AWS services.</p>
+      <p><strong>Important Note:</strong> The original IP address of the visitor is preserved using HTTP headers even when requests are routed through AWS CloudFront (a Content Delivery Network). However, in rare edge cases (e.g., if the visitor's IP changes due to network conditions or VPN use), the system might count the same visitor more than once.</p>
       <!-- Placeholder for your Architecture Diagram -->
       <div class="architecture-diagram-placeholder">
           <!-- Your architecture diagram image or embed code will go here -->

@@ -1,4 +1,4 @@
-// 165-305 (Visitor Counter Functionality)
+// 273-410 (Visitor Counter Functionality)
 // 140-227 (Contact Form Functionality)
 
 document.addEventListener('DOMContentLoaded', function() {
