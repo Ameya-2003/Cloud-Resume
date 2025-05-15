@@ -1212,32 +1212,26 @@ function initProjectDemoModal() {
         'kube-ballot': {
             title: 'Kube-Ballot Demo',
             type: 'video',
-            url: 'https://drive.google.com/file/d/your-file-id/preview', // Replace with your Google Drive video ID
-            description: 'A demonstration of the Kube-Ballot voting application running on Amazon EKS.'
+            url: 'https://drive.google.com/file/d/1W-Zv5NBC3VCyuQke1vD7-UiM4zCjlADq/preview', // Replace with your Google Drive video ID
+            description: 'A demonstration of the Kube-Ballot voting application API testing running on Amazon EKS.'
         },
         'sys-scan': {
             title: 'Sys Scan Demo',
             type: 'video',
-            url: 'https://drive.google.com/file/d/1fwlhxoZQO8t0D_au-PwrsPc7iJ3GiGOs/view?usp=sharing', // Replace with your Google Drive video ID
+            url: 'https://drive.google.com/file/d/1fwlhxoZQO8t0D_au-PwrsPc7iJ3GiGOs/preview', // Replace with your Google Drive video ID
             description: 'Watch how Sys Scan monitors system resources and provides real-time insights.'
         },
         'tokenization': {
             title: 'Tokenization of Assets Demo',
             type: 'video',
-            url: 'https://drive.google.com/file/d/your-file-id/preview', // Replace with your Google Drive video ID
+            url: 'https://drive.google.com/file/d/1yfLH_mwPBPRBv1E8DNxYDyeZKv5vKI0C/preview', // Replace with your Google Drive video ID
             description: 'See how assets are tokenized on the Ethereum blockchain.'
         },
         'blockchain-bundle': {
             title: 'Blockchain Projects Demo',
             type: 'video',
-            url: 'https://drive.google.com/file/d/your-file-id/preview', // Replace with your Google Drive video ID
-            description: 'Overview of various blockchain projects including the Decentralized Voting System.'
-        },
-        'cloud-resume': {
-            title: 'Cloud Resume Challenge Demo',
-            type: 'video',
-            url: 'https://drive.google.com/file/d/your-file-id/preview', // Replace with your Google Drive video ID
-            description: 'A walkthrough of the AWS Cloud Resume Challenge implementation.'
+            url: 'https://drive.google.com/file/d/15mrOagv-fN946OK_wILDhQvN03kF8FpL/preview', // Replace with your Google Drive video ID
+            description: 'Overview of various blockchain projects including the API testing of Decentralized Voting System.'
         }
     };
 
