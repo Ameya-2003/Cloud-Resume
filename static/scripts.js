@@ -385,8 +385,8 @@ function initVisitorCounter() {
     .then(getData => {
         console.log('GET request result (body):', getData); // Debug: GET response body
         // Call the display function with the fetched count
-        // Your Lambda returns {'visitorCount': count}
-        const fetchedCount = getData ? getData.visitorCount : undefined;
+        // Handle both visitorCount and count properties
+        const fetchedCount = getData ? (getData.visitorCount ?? getData.count) : undefined;
         console.log("Extracted fetchedCount:", fetchedCount); // Debug: Extracted count value
 
         if (typeof fetchedCount === 'number') { // Check if the extracted value is a number
@@ -504,7 +504,7 @@ function initVisitorCounter() {
         })
         .then(data => {
             // Extract and update the visitor count
-            let count = data.visitorCount; // Based on the refined Lambda GET response
+            let count = data.visitorCount ?? data.count; // Handle both visitorCount and count properties
 
             // Handle cases where count might be missing or unexpected (though less likely with refined Lambda)
             if (typeof count !== 'number' || count < 0) {
