@@ -2,6 +2,56 @@
 // 140-227 (Contact Form Functionality)
 
 document.addEventListener('DOMContentLoaded', function() {
+    const apiUrl = 'https://4bfefcldxk.execute-api.us-east-1.amazonaws.com/Prod/visitor';
+
+    function getOrdinalSuffix(num) {
+        if (typeof num !== 'number') return '';
+        const j = num % 10, k = num % 100;
+        if (j === 1 && k !== 11) return num + "st";
+        if (j === 2 && k !== 12) return num + "nd";
+        if (j === 3 && k !== 13) return num + "rd";
+        return num + "th";
+    }
+
+    function updateVisitorCounter(count, retries = 10) {
+        const visitorCountElement = document.getElementById('visitor-count');
+        const visitorNumberAndOrdinalElement = document.getElementById('visitor-number-and-ordinal');
+        console.log("updateVisitorCounter called with count:", count);
+        console.log("visitorCountElement:", visitorCountElement);
+        console.log("visitorNumberAndOrdinalElement:", visitorNumberAndOrdinalElement);
+        if (visitorCountElement && visitorNumberAndOrdinalElement) {
+            visitorCountElement.textContent = count;
+            visitorNumberAndOrdinalElement.textContent = getOrdinalSuffix(count);
+            console.log("Set visitorCountElement.textContent to:", visitorCountElement.textContent);
+        } else if (retries > 0) {
+            setTimeout(() => updateVisitorCounter(count, retries - 1), 100);
+        }
+    }
+
+    fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+    })
+    .then(response => response.json().catch(() => ({})))
+    .then(postData => {
+        return fetch(apiUrl, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        });
+    })
+    .then(response => response.json())
+    .then(data => {
+        let count = data.visitorCount ?? data.count;
+        if (typeof count === 'number' && count >= 0) {
+            updateVisitorCounter(count);
+        } else {
+            updateVisitorCounter('Error');
+        }
+    })
+    .catch(error => {
+        updateVisitorCounter('Error');
+    });
+
     // Initialize the chess board
     initChessBoard();
 
@@ -10,9 +60,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize form submission
     initContactForm();
-
-    // Initialize visitor counter
-    initVisitorCounter();
 
     // Initialize scroll progress bar
     initScrollProgressBar();
@@ -264,211 +311,6 @@ function initContactForm() {
         }
     });
 }
-
-//Start of count
-
-function initVisitorCounter() {
-    const visitorCountElement = document.getElementById('visitor-count');
-    const visitorOrdinalElement = document.getElementById('visitor-ordinal');
-
-    if (!visitorCountElement || !visitorOrdinalElement) {
-      console.warn("Visitor count or ordinal element not found.");
-      return;
-    }
-
-    const lambdaApiEndpoint = 'https://4bfefcldxk.execute-api.us-east-1.amazonaws.com/Prod/visitor'; // Replace with your real endpoint
-
-    async function updateVisitorCount() {
-      try {
-        const response = await fetch(lambdaApiEndpoint, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          const count = data.count;
-          console.log("Count received from backend:", count);
-
-          if (typeof count === 'number' && count > 0) {
-            anime({
-              targets: visitorCountElement,
-              innerHTML: [0, count],
-              round: 1,
-              duration: 2000,
-              easing: 'easeInOutExpo',
-              update: function(anim) {
-                const current = Math.round(anim.animations[0].currentValue);
-                visitorOrdinalElement.textContent = getOrdinal(current);
-              }
-            });
-          } else {
-            console.error('Invalid visitor count received:', count);
-            visitorCountElement.textContent = 'Error';
-            visitorOrdinalElement.textContent = '';
-          }
-        } else {
-          console.error('Visitor counter error:', data.error || response.statusText);
-          visitorCountElement.parentElement.style.display = 'none';
-        }
-      } catch (error) {
-        console.error('Fetch error:', error);
-        visitorCountElement.parentElement.style.display = 'none';
-      }
-    }
-
-    function getOrdinal(n) {
-      if (isNaN(n)) return n;
-      const s = ["th", "st", "nd", "rd"];
-      const v = n % 100;
-      return n + (s[(v - 20) % 10] || s[v] || s[0]);
-    }
-
-    visitorCountElement.textContent = '...';
-    visitorOrdinalElement.textContent = '';
-    updateVisitorCount(); // always update based on IP from backend
-  }
-
-//End of count
-
-// Keep your other init functions below this...
-// initChessBoard(), initMobileMenu(), etc.
-
-
-
-
-
-    // Fetch and update visitor count
-    document.addEventListener('DOMContentLoaded', () => {
-        const apiUrl = 'https://4bfefcldxk.execute-api.us-east-1.amazonaws.com/Prod/visitor';
-        const visitorCountElement = document.getElementById('visitor-count');
-        const visitorOrdinalElement = document.getElementById('visitor-ordinal');
-        const visitorMessageElement = document.querySelector('.counter-footer p:first-of-type'); // Assuming this is the paragraph for the message
-
-        // Function to update the display elements
-        function updateVisitorDisplay(count) {
-            if (visitorCountElement) {
-                visitorCountElement.textContent = count;
-            }
-            if (visitorOrdinalElement && visitorMessageElement) {
-                // You might adjust the message based on whether it's the 1st visitor
-                if (count === 1) {
-                     visitorMessageElement.innerHTML = `Congratulations on being my <span id="visitor-ordinal" class="gold-text">${getOrdinalSuffix(count)}</span> visitor!`;
-                } else if (count > 0) {
-                     visitorMessageElement.innerHTML = `Congratulations on being my <span id="visitor-ordinal" class="gold-text">${getOrdinalSuffix(count)}</span> visitor!`;
-                } else {
-                     // Handle case where count is 0 or less (shouldn't happen with incrementing)
-                     visitorMessageElement.innerHTML = `<span id="visitor-ordinal" class="gold-text">...</span>`; // Or some placeholder
-                }
-
-                 // Ensure the ordinal span gets the correct ID back if you overwrite innerHTML
-                 const updatedOrdinalSpan = visitorMessageElement.querySelector('#visitor-ordinal');
-                 if(updatedOrdinalSpan) {
-                     updatedOrdinalSpan.textContent = getOrdinalSuffix(count);
-                 }
-            }
-        }
-
-        // Helper function to add ordinal suffix (same as before)
-        function getOrdinalSuffix(num) {
-            if (typeof num !== 'number') return ''; // Handle non-numeric input
-            const j = num % 10;
-            const k = num % 100;
-
-            if (j === 1 && k !== 11) {
-                return num + "st";
-            }
-            if (j === 2 && k !== 12) {
-                return num + "nd";
-            }
-            if (j === 3 && k !== 13) {
-                return num + "rd";
-            }
-
-            return num + "th";
-        }
-
-        // 1. Send a POST request to trigger visitor count increment (handled by backend uniqueness check)
-        fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-                // No body is needed for this simple visitor tracking
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                // Log non-200 responses from the POST request
-                console.warn(`POST request to visitor API failed with status: ${response.status}`);
-                // Don't stop here, still try to fetch the current count
-            }
-             // Regardless of POST success/failure (for a returning visitor), proceed to fetch the count
-             // You might want to log success messages if needed based on response body
-             return response.json().catch(() => ({})); // Handle potential empty response body for POST
-        })
-        .then(postData => {
-            // Optional: Log the result of the POST request
-            console.log('POST request result:', postData);
-
-            // 2. After the POST request is processed, fetch the *current* visitor count with a GET request
-            return fetch(apiUrl, {
-                method: 'GET',
-                headers: {
-                     'Content-Type': 'application/json'
-                 }
-            });
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`GET request to visitor API failed with status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Extract and update the visitor count
-            let count = data.visitorCount ?? data.count; // Handle both visitorCount and count properties
-
-            // Handle cases where count might be missing or unexpected (though less likely with refined Lambda)
-            if (typeof count !== 'number' || count < 0) {
-                 console.warn('Received unexpected visitor count:', count);
-                 count = 0; // Default to 0 or handle as an error
-            }
-
-            updateVisitorDisplay(count);
-
-            // Add extra golden glow effect to the counter section header
-            const headerElement = document.querySelector('.visitor-counter-section .section-header h2');
-            if (headerElement && typeof anime !== 'undefined') { // Check if anime.js is loaded
-                anime({
-                    targets: headerElement,
-                    textShadow: [
-                        '0 0 0 rgba(255,215,0,0)',
-                        '0 0 10px rgba(255,215,0,0.7)',
-                        '0 0 5px rgba(255,215,0,0.5)',
-                        '0 0 0 rgba(255,215,0,0)'
-                    ],
-                    opacity: [0.9, 1, 0.95, 1],
-                    duration: 3000,
-                    easing: 'easeInOutSine',
-                    direction: 'alternate',
-                    loop: true
-                });
-            } else if (!headerElement) {
-                 console.warn("Visitor counter section header not found for animation.");
-            } else {
-                console.warn("anime.js library not found. Animation will not run.");
-            }
-        })
-        .catch(error => {
-            console.error('Visitor count fetch error:', error);
-            if (visitorCountElement) visitorCountElement.textContent = 'Error';
-            if (visitorOrdinalElement) visitorOrdinalElement.textContent = '';
-             if (visitorMessageElement) visitorMessageElement.textContent = 'Could not load visitor count.';
-        });
-    });
 
 // Add smooth scrolling for anchor links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -1208,3 +1050,7 @@ function initProjectDemoModal() {
         }
     });
 }
+
+
+
+

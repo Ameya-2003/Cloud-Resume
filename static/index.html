@@ -93,15 +93,15 @@
         </div>
         <div class="about-stats">
           <div class="stat-item">
-            <span class="stat-number" data-value="2">0</span><span>+</span>
-            <span class="stat-label">Years Experience</span>
+            <span class="stat-number" data-value="3">0</span><span>+</span>
+            <span class="stat-label">YOE in AWS</span>
           </div>
           <div class="stat-item">
-            <span class="stat-number" data-value="10">0</span><span>+</span>
+            <span class="stat-number" data-value="8">0</span><span>+</span>
             <span class="stat-label">Projects Completed</span>
           </div>
           <div class="stat-item">
-            <span class="stat-number" data-value="10">0</span><span>+</span>
+            <span class="stat-number" data-value="8">0</span><span>+</span>
             <span class="stat-label">AWS Deployments</span>
           </div>
         </div>
@@ -474,48 +474,22 @@
           <div class="counter-value-container">
             <div class="counter-value-wrapper">
               <div class="counter-decoration left">♞</div>
-              <div id="visitor-count" class="counter-value stat-number"></div>
+              <div id="visitor-count" class="counter-value"></div>
               <div class="counter-decoration right">♞</div>
             </div>
           </div>
 
 
           <div class="counter-footer">
-            <p>Congratulations on being my <span id="visitor-ordinal" class="gold-text"></span> visitor!</p>
+            <p class="counter-footer-message">
+              Congratulations on being my
+              <span id="visitor-number-and-ordinal" class="gold-text">...</span> <!-- Placeholder -->
+              visitor!
+          </p>
             <p><a href="#" id="howCountLink">How count is maintained</a></p>
-            <section id="visitor-count" class="visitor-count-section">
-              <div class="container">
-                <div class="section-header section-header-animated">
-                  <h2><span class="chess-piece">♜</span> Visitor Count</h2>
-                  <div class="section-divider"></div>
-                </div>
-                <div class="visitor-content animated-element">
-                  <p>You are visitor number <span id="visitor-count">Loading...</span></p>
-                  <!-- REPLACE THE LINE BELOW THIS COMMENT -->
-                  <p><a href="#" id="howCountLink">How count is maintained</a></p>
-                </div>
-              </div>
-            </section>
-             <!-- Modal for Explanation -->
-  <div id="countExplanationModal" class="modal">
-    <div class="modal-content">
-      <span class="close-button">&times;</span>
-      <h3>How the Visitor Count is Maintained</h3>
-      <p>The visitor counter increments each time a unique IP address accesses the website. This is tracked by a backend system using AWS services.</p>
-      <p><strong>Important Note:</strong> The original IP address of the visitor is preserved using HTTP headers even when requests are routed through AWS CloudFront (a Content Delivery Network). However, in rare edge cases (e.g., if the visitor's IP changes due to network conditions or VPN use), the system might count the same visitor more than once.</p>
-      <!-- Placeholder for your Architecture Diagram -->
-      <div class="architecture-diagram-placeholder">
-          <!-- Your architecture diagram image or embed code will go here -->
-          <div class="architecture-diagram-placeholder">
-            <img src="visitor-count-architecture.PNG" alt="Website Visitor Count Architecture Diagram" style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
-        </div>
-      </div>
-      <p>This system provides a general approximation of unique visitors based on observed IP addresses hitting the edge network.</p>
-    </div>
-  </div>
+          </div>
 
-            <div class="social-icons">
-              <a href="
+          <div class="social-icons">
             <div class="counter-badge">
               <i class="fas fa-trophy"></i>
               <span>AWS Cloud Resume Challenge</span>
