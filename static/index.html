@@ -94,7 +94,7 @@
         <div class="about-stats">
           <div class="stat-item">
             <span class="stat-number" data-value="3">0</span><span>+</span>
-            <span class="stat-label">YOE in AWS</span>
+            <span class="stat-label">Github Contributions</span>
           </div>
           <div class="stat-item">
             <span class="stat-number" data-value="8">0</span><span>+</span>
@@ -636,6 +636,21 @@
         <!-- Content will be dynamically inserted here -->
       </div>
     </div>
+  </div>
+
+  <!-- Add modal overlay for blur effect -->
+  <div id="modal-blur-overlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:9998; backdrop-filter: blur(6px);"></div>
+
+  <!-- Modal for How Count is Maintained -->
+  <div id="countExplanationModal" class="modal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:9999; background:#222; color:#fff; border-radius:12px; box-shadow:0 8px 32px rgba(0,0,0,0.4); max-width:95vw; width:600px; padding:40px 32px; max-height:90vh; overflow:hidden;">
+    <span class="close-button" style="position:absolute; top:16px; right:20px; font-size:1.5rem; cursor:pointer;">&times;</span>
+    <h3 style="color:var(--chess-gold); text-align:center; margin-bottom:18px;">How the Visitor Count is Maintained</h3>
+    <p style="margin-bottom:12px;">The visitor counter increments each time a unique IP address accesses the website. This is tracked by a backend system using AWS services.</p>
+    <p style="margin-bottom:12px;"><strong>Important Note:</strong> The original IP address of the visitor is preserved using HTTP headers even when requests are routed through AWS CloudFront (a Content Delivery Network). However, in rare edge cases (e.g., if the visitor's IP changes due to network conditions or VPN use), the system might count the same visitor more than once.</p>
+    <div style="margin: 18px 0; text-align:center;">
+      <img src="visitor-count-architecture.PNG" alt="Website Visitor Count Architecture Diagram" style="max-width: 100%; height: auto; border-radius:8px; box-shadow:0 2px 12px rgba(0,0,0,0.2);">
+    </div>
+    <p style="margin-top:18px; font-size:0.98em; color:#ffd700; text-align:center;">This system provides a general approximation of unique visitors based on observed IP addresses hitting the edge network.</p>
   </div>
 
 </body>

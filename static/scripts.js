@@ -79,35 +79,38 @@ document.addEventListener('DOMContentLoaded', function() {
     // Create the soft floating chess stars in background
     createFloatingChessStars();
 
-    // Get the modal, the link, and the close button
-    const modal = document.getElementById("countExplanationModal");
-    const howCountLink = document.getElementById("howCountLink");
-    const closeButton = modal ? modal.querySelector(".close-button") : null; // Find the close button inside the modal, safely
+    // Modal logic for 'How count is maintained'
+    const howCountLink = document.getElementById('howCountLink');
+    const modal = document.getElementById('countExplanationModal');
+    const closeButton = modal ? modal.querySelector('.close-button') : null;
+    const blurOverlay = document.getElementById('modal-blur-overlay');
 
-    // When the user clicks the link, open the modal
-    if (howCountLink && modal) { // Check if elements exist
-        howCountLink.onclick = function(event) {
-            event.preventDefault(); // Prevent default link behavior (page jump)
-            modal.style.display = "block";
-        }
+    function openModal() {
+        if (modal) modal.style.display = 'block';
+        if (blurOverlay) blurOverlay.style.display = 'block';
+        document.body.style.overflow = 'hidden';
     }
-
-    // When the user clicks on the close button (x), close the modal
-    if (closeButton && modal) { // Check if elements exist
-        closeButton.onclick = function() {
-            modal.style.display = "none";
-        }
+    function closeModal() {
+        if (modal) modal.style.display = 'none';
+        if (blurOverlay) blurOverlay.style.display = 'none';
+        document.body.style.overflow = '';
     }
-
-    // When the user clicks anywhere outside of the modal, close it
-    if (modal) { // Check if modal exists
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
+    if (howCountLink && modal) {
+        howCountLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            openModal();
+        });
     }
-    // Modal ends here
+    if (closeButton && modal) {
+        closeButton.addEventListener('click', closeModal);
+    }
+    if (blurOverlay) {
+        blurOverlay.addEventListener('click', closeModal);
+    }
+    // Optional: close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeModal();
+    });
 
     // Initialize project demo modal
     initProjectDemoModal();
