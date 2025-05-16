@@ -287,7 +287,7 @@ function initContactForm() {
             console.log('EmailJS Response:', response);
 
             if (response.status === 200) {
-                statusMessage.textContent = 'Message sent successfully!';
+                statusMessage.textContent = 'Message sent successfully! You should receive an email shortly.';
                 statusMessage.style.color = '#28a745'; // Green color for success
                 contactForm.reset(); // Reset form on success
                 // Hide the status message after a few seconds
